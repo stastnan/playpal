@@ -18,7 +18,7 @@ function Hero() {
       "2xl": bannerXXXL,
     },
     {
-      fallback: "md",
+      fallback: "lg",
     }
   );
 
