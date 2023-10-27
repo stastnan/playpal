@@ -1,21 +1,31 @@
 import { useNavigate } from "react-router-dom";
-import { HStack, Heading, Button } from "@chakra-ui/react";
+import { Center, Heading, Button, VStack } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
 function Error({ isErrorPage }) {
   const navigate = useNavigate();
   if (isErrorPage)
     return (
-      <HStack>
-        <Heading>Something went wrong</Heading>
-        <Button onClick={() => navigate(0)}>Go back</Button>
-      </HStack>
+      <Center
+        w="100vw"
+        h="100vh"
+        bgGradient="linear-gradient(0deg, rgba(193,134,91,1) 0%, rgba(53,29,31,1) 68%)"
+      >
+        <VStack>
+          <Heading color="white">Something went wrong</Heading>
+          <Button onClick={() => navigate(0)}>Go back</Button>
+        </VStack>
+      </Center>
     );
 
   return (
-    <HStack>
-      <Heading>Page was not found</Heading>
-    </HStack>
+    <Center
+      w="100vw"
+      h="100vh"
+      bgGradient="linear-gradient(0deg, rgba(193,134,91,1) 0%, rgba(53,29,31,1) 68%)"
+    >
+      <Heading color="white">Page was not found</Heading>
+    </Center>
   );
 }
 Error.propTypes = {
