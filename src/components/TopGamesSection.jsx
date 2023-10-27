@@ -43,7 +43,6 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
   return (
     <Box
       as="section"
-      h="400px"
       w="100vw"
       bgGradient="linear-gradient(0deg, rgba(193,134,91,1) 0%, rgba(53,29,31,1) 68%)"
       p="4"
@@ -64,15 +63,11 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
         >
           {!isLoading &&
             parsedHotGames?.map((game) => (
-              <SwiperSlide
-                key={game["@_id"]}
-                onClick={() => handleCardClick(game["@_id"])}
-              >
+              <SwiperSlide key={game["@_id"]}>
                 <GameSwiperImage
+                  handleCardClick={handleCardClick}
                   id={game["@_id"]}
-                  name={game?.name["@_value"]}
                   picture={`${game?.thumbnail["@_value"]}`}
-                  game={selectedGame}
                 />
               </SwiperSlide>
             ))}
@@ -82,7 +77,15 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
             <Skeleton key={num} w="7rem" h="7rem" borderRadius="5%" />
           ))}
       </Flex>
-      <Box>{selectedGame && isOpen && <GameInfoCard />}</Box>
+      <Box>
+        {selectedGame && isOpen && (
+          <GameInfoCard
+            games={parsedHotGames}
+            selectedGame={selectedGame}
+            setIsOpen={setIsOpen}
+          />
+        )}
+      </Box>
     </Box>
   );
 }

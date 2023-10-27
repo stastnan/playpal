@@ -2,7 +2,7 @@ import { Image } from "@chakra-ui/image";
 import { Box } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
 
-function GameSwiperImage({ picture }) {
+function GameSwiperImage({ picture, handleCardClick, id }) {
   const variant = useBreakpointValue(
     {
       base: 70,
@@ -27,6 +27,7 @@ function GameSwiperImage({ picture }) {
         borderRadius="5%"
         cursor="pointer"
         overflow="hidden"
+        onClick={() => handleCardClick(id)}
       />
     </Box>
   );
