@@ -15,6 +15,7 @@ import "swiper/css/pagination";
 
 import GameSwiperImage from "./GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
+import { customTheme } from "src/main";
 
 function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
@@ -44,7 +45,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     <Box
       as="section"
       w="100vw"
-      bgGradient="linear-gradient(0deg, rgba(193,134,91,1) 0%, rgba(53,29,31,1) 68%)"
+      bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 68%)`}
       p="4"
     >
       <Flex direction="column" justify="center" align="center" pb={10}>

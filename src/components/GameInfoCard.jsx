@@ -14,6 +14,7 @@ import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect, useRef } from "react";
 import { CloseIcon } from "@chakra-ui/icons";
+import { customTheme } from "src/main";
 
 let currentName = null;
 
@@ -79,7 +80,7 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
       direction={{ sm: "column", xl: "row" }}
       variant="outline"
       mt={20}
-      bgColor="#FFFFEF"
+      bgColor={customTheme.colors.lightYellow}
       border="none"
     >
       <Stack align="start">
