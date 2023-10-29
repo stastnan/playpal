@@ -8,6 +8,7 @@ import {
   Image,
   Stack,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import he from "he";
 import axios from "axios";
@@ -75,6 +76,20 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
     setIsOpen(false);
   };
 
+  const variant = useBreakpointValue(
+    {
+      base: false,
+      sm: false,
+      md: false,
+      lg: true,
+      xl: true,
+      "2xl": true,
+    },
+    {
+      fallback: "lg",
+    }
+  );
+
   return (
     <Card
       direction={{ sm: "column", xl: "row" }}
@@ -94,16 +109,15 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
               lg: "row",
             }}
           >
-            <Image
-              objectFit="contain"
-              src={currentGame?.image}
-              alt={`${currentGame}'s box picture`}
-              borderRadius="10"
-              maxW={{ md: "700px", lg: "480px" }}
-            />
-            <Flex direction="column" gap="5" p={{ base: "4", lg: "2" }}>
-              <Flex justify="space-between" align="center">
-                <Heading size="md" ref={cardRef} px={{ base: "0", lg: "1" }}>
+            {!variant && (
+              <Flex justify="space-between" align="center" w="100%">
+                <Heading
+                  size={{ base: "md", sm: "lg" }}
+                  ref={cardRef}
+                  pt={{ base: "0", sm: "1", md: "2" }}
+                  pb={{ base: "3", sm: "1", md: "5" }}
+                  px="4"
+                >
                   {currentGame?.name["@_value"]}
                   <Badge>{`(${currentGame?.yearpublished["@_value"]})`}</Badge>
                 </Heading>
@@ -117,6 +131,32 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                   onClick={handleClose}
                 />
               </Flex>
+            )}
+            <Image
+              objectFit="contain"
+              src={currentGame?.image}
+              alt={`${currentGame}'s box picture`}
+              borderRadius="10"
+              maxW={{ base: "250px", sm: "400px", md: "500px", lg: "480px" }}
+            />
+            <Flex direction="column" gap="5" p={{ base: "4", lg: "2" }}>
+              {variant && (
+                <Flex justify="space-between" align="center">
+                  <Heading size="md" ref={cardRef} px="1">
+                    {currentGame?.name["@_value"]}
+                    <Badge>{`(${currentGame?.yearpublished["@_value"]})`}</Badge>
+                  </Heading>
+                  <IconButton
+                    isRound={true}
+                    variant="solid"
+                    colorScheme="gray"
+                    fontSize="10px"
+                    size="xs"
+                    icon={<CloseIcon />}
+                    onClick={handleClose}
+                  />
+                </Flex>
+              )}
 
               <Text textAlign="justify" p={{ base: "0", lg: "1" }}>
                 {currentGame?.description}
@@ -129,8 +169,13 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                   lg: "row",
                 }}
               >
-                <Badge>{`Playing Time:
-                    ${currentGame?.minplaytime["@_value"]} - ${currentGame?.maxplaytime["@_value"]} min`}</Badge>
+                <Badge>
+                  Playing Time:
+                  {currentGame?.minplaytime["@_value"] ===
+                  currentGame?.maxplaytime["@_value"]
+                    ? ` ${currentGame?.minplaytime["@_value"]} min`
+                    : ` ${currentGame?.minplaytime["@_value"]} - ${currentGame?.maxplaytime["@_value"]} min`}
+                </Badge>
 
                 <Badge>
                   Players:
