@@ -59,7 +59,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
   return (
     <Box
       as="section"
-      w="100vw"
+      w="100%"
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 68%)`}
       p="4"
     >

@@ -8,7 +8,8 @@ import bannerXXL from "src/assets/images/banner-2xl.png";
 import bannerXXXL from "src/assets/images/banner-3xl.png";
 
 function Hero() {
-  const variant = useBreakpointValue(
+  console.log(bannerXXXL);
+  const imageSource = useBreakpointValue(
     {
       base: bannerSM,
       sm: bannerMD,
@@ -23,8 +24,8 @@ function Hero() {
   );
 
   return (
-    <Box>
-      <Image src={variant} w="100vw" maxH="80vh" objectFit="fill" />
+    <Box maxW="2048px" w="100%">
+      <Image src={imageSource} maxH="80vh" w="100%" />
     </Box>
   );
 }

@@ -11,12 +11,11 @@ export const customTheme = extendTheme({
     body: "Dosis, sans-serif",
   },
   colors: {
+    backgroundBrown: "#0F0E1B",
     darkBrown: "#341D1F",
     lightBrown: "#BD8359",
     lightYellow: "#FFFFEE",
   },
-
-  // Other theme configurations
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
