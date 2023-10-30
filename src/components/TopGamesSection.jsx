@@ -27,7 +27,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     setSelectedGame(selectedGame);
   };
 
-  const variant = useBreakpointValue(
+  const slidesPerView = useBreakpointValue(
     {
       base: 3,
       sm: 4,
@@ -35,6 +35,21 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       lg: 7,
       xl: 9,
       "2xl": 10,
+    },
+
+    {
+      fallback: "lg",
+    }
+  );
+
+  const swiperSkeletonSize = useBreakpointValue(
+    {
+      base: 70,
+      sm: 90,
+      md: 100,
+      lg: 110,
+      xl: 120,
+      "2xl": 120,
     },
     {
       fallback: "lg",
@@ -57,26 +72,24 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
         </Text>
       </Flex>
       <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>
-        <Swiper
-          slidesPerView={variant}
-          grabCursor={true}
-          // modules={[Pagination]}
-        >
-          {!isLoading &&
-            parsedHotGames?.map((game) => (
-              <SwiperSlide key={game["@_id"]}>
+        <Swiper slidesPerView={slidesPerView} grabCursor={true}>
+          {parsedHotGames?.map((game) => (
+            <SwiperSlide key={game["@_id"]}>
+              <Skeleton
+                isLoaded={!isLoading}
+                w={swiperSkeletonSize}
+                h={swiperSkeletonSize}
+                borderRadius="5%"
+              >
                 <GameSwiperImage
                   handleCardClick={handleCardClick}
                   id={game["@_id"]}
                   picture={`${game?.thumbnail["@_value"]}`}
                 />
-              </SwiperSlide>
-            ))}
-        </Swiper>
-        {isLoading &&
-          [...Array(10).keys()].map((num) => (
-            <Skeleton key={num} w="7rem" h="7rem" borderRadius="5%" />
+              </Skeleton>
+            </SwiperSlide>
           ))}
+        </Swiper>
       </Flex>
       <Box>
         {selectedGame && isOpen && (
