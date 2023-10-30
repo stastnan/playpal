@@ -63,12 +63,24 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 68%)`}
       p="4"
     >
-      <Flex direction="column" justify="center" align="center" pb={10}>
-        <Heading size="xl" color="white">
-          Top Gems
+      <Flex
+        direction="column"
+        justify="center"
+        align="center"
+        py={{ base: "5", sm: "10" }}
+        gap="5"
+      >
+        <Heading color="white" size={{ base: "lg", sm: "xl" }}>
+          Game Night Gossip
         </Heading>
-        <Text color="white">
-          Which of these top gems will you add to your collection?
+        <Text
+          color="white"
+          textAlign="center"
+          fontSize={{ base: "sm", sm: "md" }}
+        >
+          Embark on a mystical journey through the realms of board gaming lore,
+          where we unveil the 50 most enchanted and discussed titles, whispered
+          about in the hallowed halls of the tabletop community
         </Text>
       </Flex>
       <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>

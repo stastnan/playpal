@@ -140,7 +140,8 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                 maxW={{ base: "250px", sm: "400px", md: "500px", lg: "480px" }}
               />
             </Skeleton>
-            <Flex direction="column" gap="5" p={{ base: "4", lg: "2" }}>
+
+            <Flex direction="column" gap="5" p="0">
               {isBigScreen && (
                 <Skeleton isLoaded={!isLoading} borderRadius="5">
                   <Flex justify="space-between" align="center">
@@ -162,7 +163,11 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                 </Skeleton>
               )}
               <Skeleton isLoaded={!isLoading} borderRadius="5">
-                <Text textAlign="justify" p={{ base: "0", lg: "1" }}>
+                <Text
+                  textAlign="justify"
+                  p={{ base: "0", lg: "1" }}
+                  fontSize={{ base: "sm", sm: "md" }}
+                >
                   {currentGame?.description}
                 </Text>
               </Skeleton>
