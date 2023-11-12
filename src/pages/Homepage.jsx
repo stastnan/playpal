@@ -2,6 +2,7 @@ import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useEffect, useState } from "react";
 import TopGamesSection from "src/components/TopGamesSection";
+import UserSection from "src/components/UserSection";
 import Hero from "src/components/ui/Hero";
 
 function Homepage() {
@@ -40,6 +41,7 @@ function Homepage() {
     <>
       <Hero />
       <TopGamesSection parsedHotGames={parsedHotGames} isLoading={isLoading} />
+      <UserSection />
     </>
   );
 }

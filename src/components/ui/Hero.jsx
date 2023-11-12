@@ -25,7 +25,12 @@ function Hero() {
 
   return (
     <Box maxW="2048px" w="100%">
-      <Image src={imageSource} maxH="80vh" w="100%" />
+      <Image
+        src={imageSource}
+        maxH="80vh"
+        w="100%"
+        alt="title image of the website - boardgames library"
+      />
     </Box>
   );
 }
