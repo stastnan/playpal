@@ -73,11 +73,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
         <Heading color="white" size={{ base: "lg", sm: "xl" }}>
           Game Night Gossip
         </Heading>
-        <Text
-          color="white"
-          textAlign="center"
-          fontSize={{ base: "sm", sm: "md" }}
-        >
+        <Text color="white" align="center" fontSize={{ base: "sm", sm: "md" }}>
           Embark on a mystical journey through the realms of board gaming lore,
           where we unveil the 50 most enchanted and discussed titles, whispered
           about in the hallowed halls of the tabletop community

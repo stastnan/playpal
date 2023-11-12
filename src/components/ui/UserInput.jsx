@@ -1,19 +1,19 @@
-import { HStack, IconButton, Input } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 
-function UserInput({ placeholder, icon }) {
-  console.log(icon);
+function UserInput({ placeholder, setUserName }) {
+  let userName = null;
   return (
-    <HStack py="10" spacing="3">
-      <Input
-        variant="outline"
-        placeholder={placeholder}
-        size="md"
-        bg="white"
-        px="5"
-        textAlign="center"
-      />
-      <IconButton variant="solid" colorScheme="gray" icon={icon} />
-    </HStack>
+    <Input
+      variant="outline"
+      placeholder={placeholder}
+      size="md"
+      bg="white"
+      px="5"
+      onChange={(e) => {
+        setUserName(e.target.value);
+     
+      }}
+    />
   );
 }
 
