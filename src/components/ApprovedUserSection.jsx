@@ -19,19 +19,17 @@ import { XMLParser } from "fast-xml-parser";
 
 function ApprovedUserSection({ userGames, user }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState("");
   const [selectedGameInfo, setSelectedGameInfo] = useState();
-  const { onOpen } = useDisclosure();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const handleCardClick = (id) => {
     if (id) {
       const findSelectedGameId = userGames.find(
         (game) => id === game["@_objectid"]
       );
 
-      setIsOpen(true);
       setSelectedGame(findSelectedGameId["@_objectid"]);
+      onOpen();
     }
   };
 
@@ -109,14 +107,20 @@ function ApprovedUserSection({ userGames, user }) {
                 <Button onClick={() => handleCardClick(game["@_objectid"])}>
                   View here
                 </Button>
+                <Button onClick={onOpen}>View Modal</Button>
               </CardFooter>
             </Card>
           ))}
         </SimpleGrid>
       </Flex>
-      {/* {selectedGameInfo && !isOpen && (
-        <UsersGameModal selectedGameInfo={selectedGameInfo} />
-      )} */}
+      {selectedGameInfo && (
+        <UsersGameModal
+          selectedGameInfo={selectedGameInfo}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+        />
+      )}
     </>
   );
 }

@@ -9,12 +9,10 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
-function UsersGameModal({ selectedGameInfo }) {
-  const { isOpen, onClose } = useDisclosure();
+function UsersGameModal({ selectedGameInfo, isOpen, onOpen, onClose }) {
   const finalRef = useRef(null);
 
   return (
