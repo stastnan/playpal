@@ -12,22 +12,27 @@ function Homepage() {
   useEffect(() => {
     const fetchHotGames = async () => {
       try {
+        console.log("start");
         setIsLoading(true);
         const hotGames = await axios.get(
-          `https://boardgamegeek.com//xmlapi2/hot?boardgame`
+          `https://boardgamegeek.com/xmlapi2/hot?boardgame`
         );
-        const data = hotGames?.data;
+        console.log(`hot: ${hotGames}`);
 
+        const data = hotGames.data;
+        console.log(data);
         // Parsing data from XML to JS - customized code for reading attributes
         const options = {
           ignoreAttributes: false,
         };
         const parser = new XMLParser(options);
         let parsedData = parser.parse(data);
-        console.log(data);
+
         const hotGamesArray = parsedData?.items?.item;
         console.log(hotGamesArray);
+
         setParsedHotGames(hotGamesArray);
+        console.log(parsedHotGames);
       } catch (err) {
         throw Error("Failed to load hot games");
       } finally {

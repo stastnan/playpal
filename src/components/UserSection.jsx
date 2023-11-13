@@ -15,31 +15,28 @@ function UserSection() {
 
   useEffect(() => {
     if (userName) {
-      loadApprovedUserSection(userName);
+      loadApprovedUserSection();
     }
   }, [user]);
 
-  function loadApprovedUserSection(userName) {
+  function loadApprovedUserSection() {
     if (userName) {
       setUser(userName);
-      console.log(user);
     }
     const fetchUserGames = async () => {
       try {
         setIsLoading(true);
         const userGames = await axios.get(
-          `https://boardgamegeek.com/xmlapi2/collection?username=${user}&subtype=boardgame&own=1`
+          `https://boardgamegeek.com/xmlapi2/collection?username=${userName}&subtype=boardgame&own=1`
         );
-        const data = userGames?.data;
+        const data = userGames.data;
         // Parsing data from XML to JS - customized code for reading attributes
         const options = {
           ignoreAttributes: false,
         };
         const parser = new XMLParser(options);
         let parsedData = parser.parse(data);
-        console.log(data);
         const userGamesArray = parsedData?.items?.item;
-        console.log(userGamesArray);
         setUserGames(userGamesArray);
       } catch (err) {
         throw Error("Failed to load user games");
@@ -65,7 +62,7 @@ function UserSection() {
           direction="column"
           pt="10"
         >
-          <Heading size="xl">Player Section</Heading>
+          <Heading size={{ base: "lg", sm: "xl" }}>Player Section</Heading>
           <Text align="center" fontSize={{ base: "sm", sm: "md" }}>
             Forge your personal saga within the realm of legendary board games.
             To summon your gaming chronicles into our mystical archive, invoke
@@ -81,7 +78,7 @@ function UserSection() {
               variant="solid"
               colorScheme="gray"
               icon={<UnlockIcon />}
-              onClick={loadApprovedUserSection}
+              onClick={() => loadApprovedUserSection(userName)}
             />
           </HStack>
         </Flex>
