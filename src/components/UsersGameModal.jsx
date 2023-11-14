@@ -17,15 +17,9 @@ import {
 import GameInfoTable from "src/components/ui/GameInfoTable";
 
 function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
-  const finalRef = useRef(null);
-
   return (
     <>
-      <Box ref={finalRef} tabIndex={-1} aria-label="Focus moved to this box">
-        Some other content that ll receive focus on close.
-      </Box>
-
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader align="center">
@@ -41,9 +35,11 @@ function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
             <Skeleton isLoaded={!isLoading}>
               <Image src={selectedGameInfo?.image} borderRadius={5} />
             </Skeleton>
+
             <Skeleton isLoaded={!isLoading}>
               <GameInfoTable selectedGameInfo={selectedGameInfo} />
             </Skeleton>
+
             <Skeleton isLoaded={!isLoading}>
               <Text textAlign="justify" pt="5">
                 {selectedGameInfo?.description}
@@ -55,7 +51,7 @@ function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <Button variant="ghost">Go to stats</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

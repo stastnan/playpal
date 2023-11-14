@@ -17,6 +17,7 @@ import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { customTheme } from "src/main";
 import UsersGameModal from "src/components/UsersGameModal";
+import UserGameFilter from "src/components/UserGameFilter";
 
 function ApprovedUserSection({ userGames, user }) {
   const [selectedGame, setSelectedGame] = useState("");
@@ -100,12 +101,17 @@ function ApprovedUserSection({ userGames, user }) {
           py="5"
           align="center"
         >{`This is a personal boardgames shelf of ${user}`}</Heading>
+        {/* <UserGameFilter userGames={userGames} /> */}
         <SimpleGrid
           spacing="5"
           templateColumns="repeat(auto-fill, minmax(214px, 1fr))"
         >
           {userGames?.map((game) => (
-            <Card align="center" key={game["@_objectid"]}>
+            <Card
+              align="center"
+              key={game["@_objectid"]}
+              bg={customTheme.colors.lightYellow}
+            >
               <CardHeader>
                 <Heading
                   align="center"

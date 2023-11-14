@@ -10,7 +10,6 @@ function Layout() {
       backgroundPosition="center"
       bg={customTheme.colors.backgroundBrown}
       m=" 0 auto"
-      h="100vh"
     >
       <Flex direction="column" align="center" m=" 0 auto" maxW="2048px">
         <Outlet />

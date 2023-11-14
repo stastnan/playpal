@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Box,
@@ -20,7 +20,11 @@ import { customTheme } from "src/main";
 function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [wishlist, setWishlist] = useState([]);
+  const [isItemOnWishlist, setIsItemOnWishList] = useState(false);
+  console.log("games");
+  console.log(parsedHotGames);
+  console.log(selectedGame);
   const handleCardClick = (id) => {
     const selectedGame = parsedHotGames.find((game) => game["@_id"] === id);
     setIsOpen(true);
@@ -55,6 +59,72 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       fallback: "lg",
     }
   );
+
+  // const isOnWishlist = (id) => {
+  //   const isItemOn = wishlist.includes(id);
+  //   console.log("tady");
+  //   console.log(isItemOn);
+  //   setIsItemOnWishList(isItemOn);
+  // };
+  // const onWishlistAdd = (id) => {
+  //   console.log(id);
+
+  //   setWishlist((prevWishlist) => {
+  //     const isItemInWishlist = prevWishlist.includes(id);
+
+  //     if (!isItemInWishlist) {
+  //       setIsItemOnWishList(true);
+  //       return [...prevWishlist, id];
+  //     } else {
+  //       setIsItemOnWishList(false);
+  //       return prevWishlist.filter((item) => item !== id);
+  //     }
+  //   });
+  // };
+
+  // const isItemInWishlist = (wishlist, id) => {
+  //   return wishlist.includes(id);
+  // };
+
+  // const onWishlistAdd = (id) => {
+  //   console.log(id);
+
+  //   setWishlist((prevWishlist) => {
+  //     const itemInWishlist = isItemInWishlist(prevWishlist, id);
+
+  //     if (itemInWishlist) {
+  //       // Remove the item if it's already in the wishlist
+  //       setIsItemOnWishList(false);
+  //       return prevWishlist.filter((item) => item !== id);
+  //     } else {
+  //       // Add the item if it's not in the wishlist
+  //       setIsItemOnWishList(true);
+  //       return [...prevWishlist, id];
+  //     }
+  //   });
+  // };
+
+  const ItemInWishlist = (id) => {
+    return wishlist.includes(id);
+  };
+
+  const onWishlistAdd = (id) => {
+    setWishlist((prevWishlist) => {
+      const newItemInWishlist = ItemInWishlist(id);
+
+      if (newItemInWishlist) {
+        return prevWishlist.filter((item) => item !== id);
+      } else {
+        return [...prevWishlist, id];
+      }
+    });
+
+    setIsItemOnWishList((prev) => !prev);
+  };
+  useEffect(() => {
+    // Reset isItemOnWishList when switching to a different game
+    setIsItemOnWishList(ItemInWishlist(selectedGame));
+  }, [selectedGame]);
 
   return (
     <Box
@@ -102,12 +172,28 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       <Box>
         {selectedGame && isOpen && (
           <GameInfoCard
-            games={parsedHotGames}
             selectedGame={selectedGame}
             setIsOpen={setIsOpen}
+            onWishlistAdd={onWishlistAdd}
+            isItemOnWishlist={isItemOnWishlist}
           />
         )}
       </Box>
+
+      {wishlist?.length > 0 && (
+        <Box>
+          {wishlist?.map((itemId) => {
+            const game = parsedHotGames.find((game) => game["@_id"] === itemId);
+
+            if (game) {
+              const gameName = game.name["@_value"];
+              return <p key={itemId}>{gameName}</p>;
+            }
+
+            return null;
+          })}
+        </Box>
+      )}
     </Box>
   );
 }

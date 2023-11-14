@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   Card,
   CardBody,
   Flex,
@@ -9,18 +10,24 @@ import {
   Skeleton,
   Stack,
   Text,
+  Tooltip,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import he from "he";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect, useRef } from "react";
-import { CloseIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { customTheme } from "src/main";
 
 let currentName = null;
 
-function GameInfoCard({ selectedGame, setIsOpen }) {
+function GameInfoCard({
+  selectedGame,
+  setIsOpen,
+  onWishlistAdd,
+  isItemOnWishlist,
+}) {
   const [currentGame, setCurrentGame] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const cardRef = useRef();
@@ -98,6 +105,7 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
       mt={20}
       bgColor={customTheme.colors.lightYellow}
       border="none"
+      position="relative"
     >
       <Stack align="start">
         <CardBody>
@@ -197,8 +205,43 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                         ${currentGame?.minplayers["@_value"]} - ${currentGame?.maxplayers["@_value"]}`}
                   </Badge>
                   <Badge>{`Min. Age: ${currentGame?.minage["@_value"]}`}</Badge>
+                  {!isBigScreen && (
+                    <Flex mt="10" justify="center">
+                      <Tooltip
+                        color="white"
+                        hasArrow
+                        label="Add game to wishlist"
+                        bg={customTheme.colors.darkBrown}
+                      >
+                        <IconButton
+                          isRound
+                          icon={isItemOnWishlist ? <CheckIcon /> : <AddIcon />}
+                          onClick={() => onWishlistAdd(currentGame["@_id"])}
+                        />
+                      </Tooltip>
+                    </Flex>
+                  )}
                 </Stack>
               </Skeleton>
+              {isBigScreen && (
+                <Tooltip
+                  hasArrow
+                  label="Add game to wishlist"
+                  bg={customTheme.colors.darkBrown}
+                  placement="left"
+                  color="white"
+                >
+                  <IconButton
+                    isRound
+                    icon={isItemOnWishlist ? <CheckIcon /> : <AddIcon />}
+                    size="sm"
+                    right="5"
+                    bottom="5"
+                    position="absolute"
+                    onClick={() => onWishlistAdd(currentGame["@_id"])}
+                  />
+                </Tooltip>
+              )}
             </Flex>
           </Flex>
         </CardBody>
