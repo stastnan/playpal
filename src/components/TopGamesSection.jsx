@@ -20,8 +20,16 @@ import { customTheme } from "src/main";
 function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [wishlist, setWishlist] = useState([]);
-  const [isItemOnWishlist, setIsItemOnWishlist] = useState(false);
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
+    return savedWishlist || [];
+  });
+  const [isItemOnWishlist, setIsItemOnWishlist] = useState(() => {
+    if (selectedGame) {
+      return ItemInWishlist(selectedGame);
+    }
+    return false;
+  });
   console.log("games");
   console.log(parsedHotGames);
   console.log(selectedGame);
@@ -64,6 +72,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     return wishlist.includes(id);
   };
 
+  // Function to add/remove item from the wishlist
   const onWishlistAdd = (id) => {
     setWishlist((prevWishlist) => {
       const newItemInWishlist = ItemInWishlist(id);
@@ -78,15 +87,15 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     setIsItemOnWishlist((prev) => !prev);
   };
 
+  // Effect to reset isItemOnWishList when switching to a different game
   useEffect(() => {
-    // Update isItemOnWishList when the selected game changes
     setIsItemOnWishlist(ItemInWishlist(selectedGame));
   }, [selectedGame]);
 
+  // Effect to save wishlist to local storage when it changes
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
-
   return (
     <Box
       as="section"
