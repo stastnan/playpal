@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -5,22 +6,23 @@ import {
   CardFooter,
   CardHeader,
   Flex,
+  HStack,
   Heading,
   Image,
   SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
-import { customTheme } from "src/main";
-import UsersGameModal from "src/components/UsersGameModal";
+import he from "he";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
+import { customTheme } from "src/main";
+import UsersGameModal from "src/components/UsersGameModal";
 
 function ApprovedUserSection({ userGames, user }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState("");
   const [selectedGameInfo, setSelectedGameInfo] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleCardClick = (id) => {
     if (id) {
@@ -47,15 +49,33 @@ function ApprovedUserSection({ userGames, user }) {
       );
       const data = userSelectedGame.data;
       // Parsing data from XML to JS - customized code for reading attributes
+
       const options = {
         ignoreAttributes: false,
+        allowBooleanAttributes: true,
       };
+      console.log(data);
       const parser = new XMLParser(options);
       let parsedData = parser.parse(data);
-      const userSelectedGameInfo = parsedData?.items;
+      console.log(parsedData);
+      const userSelectedGameInfo = parsedData?.items?.item;
 
-      setSelectedGameInfo(userSelectedGameInfo.item);
-      console.log(selectedGameInfo);
+      // decoding HTML entities for two scenarions - some games come from API with only one name, some with an array of names
+      if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
+        const name = userSelectedGameInfo.name[0];
+        const currentName = he.decode(name["@_value"]);
+        console.log(currentName);
+        userSelectedGameInfo.name["@_value"] = currentName;
+        console.log(userSelectedGameInfo.name["@_value"]);
+      }
+
+      if (userSelectedGameInfo && userSelectedGameInfo.description) {
+        userSelectedGameInfo.description = he.decode(
+          userSelectedGameInfo.description
+        );
+      }
+
+      setSelectedGameInfo(userSelectedGameInfo);
     } catch (err) {
       throw Error("Failed to load selected games");
     } finally {
@@ -81,8 +101,8 @@ function ApprovedUserSection({ userGames, user }) {
           align="center"
         >{`This is a personal boardgames shelf of ${user}`}</Heading>
         <SimpleGrid
-          spacing={5}
-          templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+          spacing="5"
+          templateColumns="repeat(auto-fill, minmax(214px, 1fr))"
         >
           {userGames?.map((game) => (
             <Card align="center" key={game["@_objectid"]}>
@@ -104,10 +124,17 @@ function ApprovedUserSection({ userGames, user }) {
                 <Image src={game.thumbnail} objectFit="scale-down" />
               </CardBody>
               <CardFooter>
-                <Button onClick={() => handleCardClick(game["@_objectid"])}>
-                  View here
-                </Button>
-                <Button onClick={onOpen}>View Modal</Button>
+                <HStack spacing={{ base: 5, sm: 2 }}>
+                  <Button
+                    size={{ base: "md", sm: "sm" }}
+                    onClick={() => handleCardClick(game["@_objectid"])}
+                  >
+                    Game info
+                  </Button>
+                  <Button size={{ base: "md", sm: "sm" }} onClick={onOpen}>
+                    Game stats
+                  </Button>
+                </HStack>
               </CardFooter>
             </Card>
           ))}
@@ -119,6 +146,7 @@ function ApprovedUserSection({ userGames, user }) {
           isOpen={isOpen}
           onOpen={onOpen}
           onClose={onClose}
+          isLoading={isLoading}
         />
       )}
     </>

@@ -115,7 +115,7 @@ function GameInfoCard({ selectedGame, setIsOpen }) {
                 <Skeleton isLoaded={!isLoading}>
                   <Heading size={{ base: "sm", sm: "md" }} ref={cardRef}>
                     {currentGame?.name["@_value"]}
-                    <Badge>{`(${currentGame?.yearpublished["@_value"]})`}</Badge>
+                    <Badge>{currentGame?.yearpublished["@_value"]}</Badge>
                   </Heading>
                 </Skeleton>
                 <Skeleton isLoaded={!isLoading}>

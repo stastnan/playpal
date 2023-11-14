@@ -8,7 +8,6 @@ import bannerXXL from "src/assets/images/banner-2xl.png";
 import bannerXXXL from "src/assets/images/banner-3xl.png";
 
 function Hero() {
-  console.log(bannerXXXL);
   const imageSource = useBreakpointValue(
     {
       base: bannerSM,

@@ -1,6 +1,9 @@
+import { useRef } from "react";
 import {
   Box,
   Button,
+  Heading,
+  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,11 +11,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Skeleton,
   Text,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import GameInfoTable from "src/components/ui/GameInfoTable";
 
-function UsersGameModal({ selectedGameInfo, isOpen, onOpen, onClose }) {
+function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
   const finalRef = useRef(null);
 
   return (
@@ -24,10 +28,27 @@ function UsersGameModal({ selectedGameInfo, isOpen, onOpen, onClose }) {
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader align="center">
+            <Skeleton isLoaded={!isLoading}>
+              <Heading as="h4" size={{ base: "sm", sm: "md" }}>
+                {selectedGameInfo?.name["@_value"]}
+              </Heading>
+            </Skeleton>
+          </ModalHeader>
+
           <ModalCloseButton />
           <ModalBody>
-            <Text count={2} />
+            <Skeleton isLoaded={!isLoading}>
+              <Image src={selectedGameInfo?.image} borderRadius={5} />
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading}>
+              <GameInfoTable selectedGameInfo={selectedGameInfo} />
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading}>
+              <Text textAlign="justify" pt="5">
+                {selectedGameInfo?.description}
+              </Text>
+            </Skeleton>
           </ModalBody>
 
           <ModalFooter>
