@@ -210,7 +210,11 @@ function GameInfoCard({
                       <Tooltip
                         color="white"
                         hasArrow
-                        label="Add game to wishlist"
+                        label={
+                          isItemOnWishlist
+                            ? "This game is already on your wishlist!"
+                            : "Add game to wishlist"
+                        }
                         bg={customTheme.colors.darkBrown}
                       >
                         <IconButton
@@ -226,7 +230,11 @@ function GameInfoCard({
               {isBigScreen && (
                 <Tooltip
                   hasArrow
-                  label="Add game to wishlist"
+                  label={
+                    isItemOnWishlist
+                      ? "This game is already on your wishlist!"
+                      : "Add game to wishlist"
+                  }
                   bg={customTheme.colors.darkBrown}
                   placement="left"
                   color="white"

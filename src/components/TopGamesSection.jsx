@@ -21,7 +21,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [wishlist, setWishlist] = useState([]);
-  const [isItemOnWishlist, setIsItemOnWishList] = useState(false);
+  const [isItemOnWishlist, setIsItemOnWishlist] = useState(false);
   console.log("games");
   console.log(parsedHotGames);
   console.log(selectedGame);
@@ -60,50 +60,6 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     }
   );
 
-  // const isOnWishlist = (id) => {
-  //   const isItemOn = wishlist.includes(id);
-  //   console.log("tady");
-  //   console.log(isItemOn);
-  //   setIsItemOnWishList(isItemOn);
-  // };
-  // const onWishlistAdd = (id) => {
-  //   console.log(id);
-
-  //   setWishlist((prevWishlist) => {
-  //     const isItemInWishlist = prevWishlist.includes(id);
-
-  //     if (!isItemInWishlist) {
-  //       setIsItemOnWishList(true);
-  //       return [...prevWishlist, id];
-  //     } else {
-  //       setIsItemOnWishList(false);
-  //       return prevWishlist.filter((item) => item !== id);
-  //     }
-  //   });
-  // };
-
-  // const isItemInWishlist = (wishlist, id) => {
-  //   return wishlist.includes(id);
-  // };
-
-  // const onWishlistAdd = (id) => {
-  //   console.log(id);
-
-  //   setWishlist((prevWishlist) => {
-  //     const itemInWishlist = isItemInWishlist(prevWishlist, id);
-
-  //     if (itemInWishlist) {
-  //       // Remove the item if it's already in the wishlist
-  //       setIsItemOnWishList(false);
-  //       return prevWishlist.filter((item) => item !== id);
-  //     } else {
-  //       // Add the item if it's not in the wishlist
-  //       setIsItemOnWishList(true);
-  //       return [...prevWishlist, id];
-  //     }
-  //   });
-  // };
-
   const ItemInWishlist = (id) => {
     return wishlist.includes(id);
   };
@@ -119,12 +75,17 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       }
     });
 
-    setIsItemOnWishList((prev) => !prev);
+    setIsItemOnWishlist((prev) => !prev);
   };
+
   useEffect(() => {
-    // Reset isItemOnWishList when switching to a different game
-    setIsItemOnWishList(ItemInWishlist(selectedGame));
+    // Update isItemOnWishList when the selected game changes
+    setIsItemOnWishlist(ItemInWishlist(selectedGame));
   }, [selectedGame]);
+
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
 
   return (
     <Box

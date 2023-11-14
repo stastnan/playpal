@@ -48,7 +48,7 @@ function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="gray" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button variant="ghost">Go to stats</Button>

@@ -100,7 +100,7 @@ function ApprovedUserSection({ userGames, user }) {
           color="white"
           py="5"
           align="center"
-        >{`This is a personal boardgames shelf of ${user}`}</Heading>
+        >{`This is the personal boardgames shelf of ${user}`}</Heading>
         {/* <UserGameFilter userGames={userGames} /> */}
         <SimpleGrid
           spacing="5"
@@ -134,10 +134,27 @@ function ApprovedUserSection({ userGames, user }) {
                   <Button
                     size={{ base: "md", sm: "sm" }}
                     onClick={() => handleCardClick(game["@_objectid"])}
+                    bg="#BB8158"
+                    color="black"
+                    colorScheme={customTheme.colors.lightBrown}
+                    _hover={{
+                      background: "#F9DAA3",
+                      color: "black",
+                    }}
                   >
                     Game info
                   </Button>
-                  <Button size={{ base: "md", sm: "sm" }} onClick={onOpen}>
+                  <Button
+                    size={{ base: "md", sm: "sm" }}
+                    onClick={onOpen}
+                    bg="#BB8158"
+                    colorScheme={customTheme.colors.lightBrown}
+                    color="black"
+                    _hover={{
+                      background: "#F9DAA3",
+                      color: "black",
+                    }}
+                  >
                     Game stats
                   </Button>
                 </HStack>
