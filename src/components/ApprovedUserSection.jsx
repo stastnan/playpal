@@ -122,6 +122,7 @@ function ApprovedUserSection({ userGames, user }) {
                     md: "md",
                     lg: "lg",
                   }}
+                  noOfLines={2}
                 >
                   {game.name["#text"]}
                 </Heading>

@@ -55,13 +55,7 @@ function UserSection() {
         bgGradient={`linear-gradient(0deg, ${customTheme.colors.darkBrown} 0%, ${customTheme.colors.lightBrown} 68%)`}
         p="4"
       >
-        <Flex
-          w="100%"
-          align="center"
-          justify="center"
-          direction="column"
-          pt="10"
-        >
+        <Flex w="100%" align="center" justify="center" direction="column">
           <Heading size={{ base: "lg", sm: "xl" }}>Player Section</Heading>
           <Text align="center" fontSize={{ base: "sm", sm: "md" }}>
             Forge your personal saga within the realm of legendary board games.

@@ -16,7 +16,7 @@ import "swiper/css/pagination";
 import GameSwiperImage from "./GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
-
+import WishlistAccordion from "src/components/WishlistAccordion";
 function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,9 +30,7 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     }
     return false;
   });
-  console.log("games");
-  console.log(parsedHotGames);
-  console.log(selectedGame);
+
   const handleCardClick = (id) => {
     const selectedGame = parsedHotGames.find((game) => game["@_id"] === id);
     setIsOpen(true);
@@ -72,30 +70,32 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     return wishlist.includes(id);
   };
 
-  // Function to add/remove item from the wishlist
   const onWishlistAdd = (id) => {
     setWishlist((prevWishlist) => {
       const newItemInWishlist = ItemInWishlist(id);
+      const updatedWishlist = newItemInWishlist
+        ? prevWishlist.filter((item) => item !== id)
+        : [...prevWishlist, id];
 
-      if (newItemInWishlist) {
-        return prevWishlist.filter((item) => item !== id);
-      } else {
-        return [...prevWishlist, id];
+      const isUpdatingSelectedGame =
+        selectedGame && selectedGame["@_id"] === id;
+
+      if (isUpdatingSelectedGame) {
+        setIsItemOnWishlist(!newItemInWishlist);
       }
-    });
 
-    setIsItemOnWishlist((prev) => !prev);
+      return updatedWishlist;
+    });
   };
 
-  // Effect to reset isItemOnWishList when switching to a different game
   useEffect(() => {
-    setIsItemOnWishlist(ItemInWishlist(selectedGame));
-  }, [selectedGame]);
+    setIsItemOnWishlist(ItemInWishlist(selectedGame && selectedGame["@_id"]));
+  }, [wishlist, selectedGame]);
 
-  // Effect to save wishlist to local storage when it changes
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
+
   return (
     <Box
       as="section"
@@ -139,30 +139,25 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
           ))}
         </Swiper>
       </Flex>
-      <Box>
-        {selectedGame && isOpen && (
+      {selectedGame && isOpen && (
+        <Box pb="10">
           <GameInfoCard
             selectedGame={selectedGame}
             setIsOpen={setIsOpen}
             onWishlistAdd={onWishlistAdd}
             isItemOnWishlist={isItemOnWishlist}
           />
-        )}
-      </Box>
+        </Box>
+      )}
 
       {wishlist?.length > 0 && (
-        <Box>
-          {wishlist?.map((itemId) => {
-            const game = parsedHotGames.find((game) => game["@_id"] === itemId);
-
-            if (game) {
-              const gameName = game.name["@_value"];
-              return <p key={itemId}>{gameName}</p>;
-            }
-
-            return null;
-          })}
-        </Box>
+        <WishlistAccordion
+          wishlist={wishlist}
+          parsedHotGames={parsedHotGames}
+          isItemOnWishlist={isItemOnWishlist}
+          setIsItemOnWishlist={setIsItemOnWishlist}
+          setWishlist={setWishlist}
+        />
       )}
     </Box>
   );

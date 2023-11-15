@@ -1,6 +1,4 @@
-import { useRef } from "react";
 import {
-  Box,
   Button,
   Heading,
   Image,
