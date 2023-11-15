@@ -17,6 +17,7 @@ import GameSwiperImage from "./GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
 import WishlistAccordion from "src/components/WishlistAccordion";
+import SearchButton from "./SearchButton";
 function TopGamesSection({ parsedHotGames, isLoading }) {
   const [selectedGame, setSelectedGame] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -102,7 +103,15 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
       w="100%"
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 68%)`}
       p="4"
+      position="relative"
     >
+      <Box
+        position="absolute"
+        right={{ base: "2", sm: "3" }}
+        top={{ base: "2", sm: "3" }}
+      >
+        <SearchButton content="" position="absolute" top="0" right="0" />
+      </Box>
       <Flex
         direction="column"
         justify="center"

@@ -11,9 +11,11 @@ function Error({ isErrorPage }) {
         h="100vh"
         bgGradient="linear-gradient(0deg, rgba(193,134,91,1) 0%, rgba(53,29,31,1) 68%)"
       >
-        <VStack>
+        <VStack spacing="5">
           <Heading color="white">Something went wrong</Heading>
-          <Button onClick={() => navigate(0)}>Go back</Button>
+          <Button size="md" onClick={() => navigate(0)}>
+            Go back
+          </Button>
         </VStack>
       </Center>
     );
