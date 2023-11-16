@@ -28,6 +28,8 @@ function ApprovedUserSection({
   isItemOnWishlist,
   setIsItemOnWishlist,
   setWishlist,
+  isWishlistVisible,
+  setIsWishlistVisible,
 }) {
   const [selectedGame, setSelectedGame] = useState("");
   const [selectedGameInfo, setSelectedGameInfo] = useState();
@@ -92,8 +94,7 @@ function ApprovedUserSection({
   console.log(selectedGameInfo);
   return (
     <>
-      {/* Update the user - not if the user is here, but if it is correct user for whom can be loaded the approved section */}
-      {user && (
+      {wishlist && isWishlistVisible && (
         <Box
           bg={customTheme.colors.darkBrown}
           px={{ base: "2", sm: "8", md: "10" }}
@@ -117,6 +118,7 @@ function ApprovedUserSection({
           )}
         </Box>
       )}
+
       <Flex
         direction="column"
         justify="center"
@@ -126,12 +128,14 @@ function ApprovedUserSection({
         w="100%"
         bgGradient={`linear-gradient(0deg, black 0%, ${customTheme.colors.darkBrown} 68%)`}
       >
-        <Heading
-          size={{ base: "lg", sm: "xl" }}
-          color="white"
-          py="5"
-          align="center"
-        >{`This is the personal boardgames shelf of ${user}`}</Heading>
+        {selectedGameInfo && (
+          <Heading
+            size={{ base: "lg", sm: "xl" }}
+            color="white"
+            py="5"
+            align="center"
+          >{`This is the personal boardgames shelf of ${user}`}</Heading>
+        )}
         {/* <UserGameFilter userGames={userGames} /> */}
         <SimpleGrid
           spacing="5"
@@ -195,6 +199,7 @@ function ApprovedUserSection({
           ))}
         </SimpleGrid>
       </Flex>
+
       {selectedGameInfo && (
         <UsersGameModal
           selectedGameInfo={selectedGameInfo}

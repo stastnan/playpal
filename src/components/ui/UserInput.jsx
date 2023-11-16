@@ -1,7 +1,14 @@
 import { Input } from "@chakra-ui/react";
 
-function UserInput({ placeholder, setUser, user }) {
+function UserInput({
+  placeholder,
+  setUser,
+  user,
+  setIsWishlistVisible,
+  IsWishlistVisible,
+}) {
   // let userName = null;
+
   return (
     <Input
       variant="outline"

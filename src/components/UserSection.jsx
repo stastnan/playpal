@@ -11,6 +11,7 @@ function UserSection({ wishlist, setWishlist }) {
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userGames, setUserGames] = useState();
+  const [isWishlistVisible, setIsWishlistVisible] = useState(false);
   console.log(wishlist);
   const fetchUserGames = async () => {
     try {
@@ -30,6 +31,7 @@ function UserSection({ wishlist, setWishlist }) {
       const userGamesArray = parsedData?.items?.item;
 
       setUserGames(userGamesArray);
+      setIsWishlistVisible(true);
     } catch (err) {
       throw Error("Failed to load user games");
     } finally {
@@ -63,6 +65,8 @@ function UserSection({ wishlist, setWishlist }) {
               placeholder="Your BGG username"
               user={user}
               setUser={setUser}
+              isWishlistVisible={isWishlistVisible}
+              setIsWishlistVisible={setIsWishlistVisible}
             />
             <IconButton
               variant="solid"
@@ -79,6 +83,8 @@ function UserSection({ wishlist, setWishlist }) {
           user={user}
           wishlist={wishlist}
           setWishlist={setWishlist}
+          isWishlistVisible={isWishlistVisible}
+          setIsWishlistVisible={setIsWishlistVisible}
         />
       )}
     </>

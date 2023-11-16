@@ -16,8 +16,6 @@ function WishlistAccordion({
   isItemOnWishlist,
   setIsItemOnWishlist,
   setWishlist,
-  setIsWishlistVisible,
-  isWishlistVisible,
   setSelectedGame,
   setSelectedGameInfo,
   selectedGame,
@@ -58,8 +56,6 @@ function WishlistAccordion({
               isItemOnWishlist={isItemOnWishlist}
               setIsItemOnWishlist={setIsItemOnWishlist}
               setWishlist={setWishlist}
-              setIsWishlistVisible={setIsWishlistVisible}
-              isWishlistVisible={isWishlistVisible}
               setSelectedGame={setSelectedGame}
               setSelectedGameInfo={setSelectedGameInfo}
               selectedGame={selectedGame}
