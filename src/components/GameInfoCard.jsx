@@ -1,6 +1,5 @@
 import {
   Badge,
-  Box,
   Card,
   CardBody,
   Flex,
@@ -213,7 +212,7 @@ function GameInfoCard({
                         label={
                           isItemOnWishlist
                             ? "This game is already on your wishlist!"
-                            : "Add game to wishlist"
+                            : "Add game to wishlist   (*See your wishlist after entering Player section)"
                         }
                         bg={customTheme.colors.darkBrown}
                       >

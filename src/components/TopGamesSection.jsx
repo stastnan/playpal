@@ -16,22 +16,25 @@ import "swiper/css/pagination";
 import GameSwiperImage from "./GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
-import WishlistAccordion from "src/components/WishlistAccordion";
 import SearchButton from "./SearchButton";
-function TopGamesSection({ parsedHotGames, isLoading }) {
-  const [selectedGame, setSelectedGame] = useState();
-  const [isOpen, setIsOpen] = useState(false);
-  const [wishlist, setWishlist] = useState(() => {
-    const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
-    return savedWishlist || [];
-  });
-  const [isItemOnWishlist, setIsItemOnWishlist] = useState(() => {
-    if (selectedGame) {
-      return ItemInWishlist(selectedGame);
-    }
-    return false;
-  });
+import axios from "axios";
+import { XMLParser } from "fast-xml-parser";
+import he from "he";
 
+function TopGamesSection({
+  parsedHotGames,
+  isLoading,
+  setIsLoading,
+  wishlist,
+  setWishlist,
+  selectedGame,
+  setSelectedGame,
+  isItemOnWishlist,
+  setIsItemOnWishlist,
+  setSelectedGameInfo,
+  ItemInWishlist,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
   const handleCardClick = (id) => {
     const selectedGame = parsedHotGames.find((game) => game["@_id"] === id);
     setIsOpen(true);
@@ -67,23 +70,69 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
     }
   );
 
-  const ItemInWishlist = (id) => {
-    return wishlist.includes(id);
-  };
-
-  const onWishlistAdd = (id) => {
+  const onWishlistAdd = async (id) => {
     setWishlist((prevWishlist) => {
       const newItemInWishlist = ItemInWishlist(id);
       const updatedWishlist = newItemInWishlist
         ? prevWishlist.filter((item) => item !== id)
         : [...prevWishlist, id];
 
-      const isUpdatingSelectedGame =
-        selectedGame && selectedGame["@_id"] === id;
+      const fetchAndHandleGame = async (id) => {
+        try {
+          setIsLoading(true);
+          const userSelectedGame = await axios.get(
+            `https://boardgamegeek.com/xmlapi2/thing?id=${id}`
+          );
+          const data = userSelectedGame.data;
+          // Parsing data from XML to JS - customized code for reading attributes
+          const options = {
+            ignoreAttributes: false,
+            allowBooleanAttributes: true,
+          };
+          console.log(data);
+          const parser = new XMLParser(options);
+          let parsedData = parser.parse(data);
+          console.log(parsedData);
+          const userSelectedGameInfo = parsedData?.items?.item;
 
-      if (isUpdatingSelectedGame) {
-        setIsItemOnWishlist(!newItemInWishlist);
-      }
+          // decoding HTML entities for two scenarios - some games come from API with only one name, some with an array of names
+          if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
+            const name = userSelectedGameInfo.name[0];
+            const currentName = he.decode(name["@_value"]);
+            console.log(currentName);
+            userSelectedGameInfo.name["@_value"] = currentName;
+            console.log(userSelectedGameInfo.name["@_value"]);
+          }
+
+          if (userSelectedGameInfo && userSelectedGameInfo.description) {
+            userSelectedGameInfo.description = he.decode(
+              userSelectedGameInfo.description
+            );
+          }
+
+          setSelectedGameInfo(userSelectedGameInfo);
+
+          const updatedLocalStorage =
+            JSON.parse(localStorage.getItem("wishlist")) || [];
+          if (!updatedLocalStorage.includes(id)) {
+            updatedLocalStorage.push(id);
+          }
+          localStorage.setItem("wishlist", JSON.stringify(updatedLocalStorage));
+
+          // If the game is being updated, set the selected game and open the modal
+          if (selectedGame && selectedGame["@_id"] === id) {
+            setSelectedGameInfo(userSelectedGameInfo);
+            setIsOpen(true);
+          }
+        } catch (err) {
+          throw new Error("Failed to load selected games");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      console.log(wishlist);
+      // Fetch and handle the game for the newly added ID
+      fetchAndHandleGame(id);
 
       return updatedWishlist;
     });
@@ -157,16 +206,6 @@ function TopGamesSection({ parsedHotGames, isLoading }) {
             isItemOnWishlist={isItemOnWishlist}
           />
         </Box>
-      )}
-
-      {wishlist?.length > 0 && (
-        <WishlistAccordion
-          wishlist={wishlist}
-          parsedHotGames={parsedHotGames}
-          isItemOnWishlist={isItemOnWishlist}
-          setIsItemOnWishlist={setIsItemOnWishlist}
-          setWishlist={setWishlist}
-        />
       )}
     </Box>
   );

@@ -8,19 +8,37 @@ import Hero from "src/components/ui/Hero";
 function Homepage() {
   const [parsedHotGames, setParsedHotGames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedGame, setSelectedGame] = useState();
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
+    return savedWishlist || [];
+  });
+  const [isItemOnWishlist, setIsItemOnWishlist] = useState(() => {
+    if (selectedGame) {
+      return ItemInWishlist(selectedGame);
+    }
+    return false;
+  });
 
+  const ItemInWishlist = (id) => {
+    return wishlist.includes(id);
+  };
+
+  const [selectedGameInfo, setSelectedGameInfo] = useState();
+
+  if (wishlist) {
+    console.log(wishlist);
+  }
   useEffect(() => {
     const fetchHotGames = async () => {
       try {
-        console.log("start");
         setIsLoading(true);
         const hotGames = await axios.get(
           `https://boardgamegeek.com/xmlapi2/hot?boardgame`
         );
-        console.log(`hot: ${hotGames}`);
 
         const data = hotGames.data;
-        console.log(data);
+
         // Parsing data from XML to JS - customized code for reading attributes
         const options = {
           ignoreAttributes: false,
@@ -32,7 +50,6 @@ function Homepage() {
         console.log(hotGamesArray);
 
         setParsedHotGames(hotGamesArray);
-        console.log(parsedHotGames);
       } catch (err) {
         throw Error("Failed to load hot games");
       } finally {
@@ -45,8 +62,20 @@ function Homepage() {
   return (
     <>
       <Hero />
-      <TopGamesSection parsedHotGames={parsedHotGames} isLoading={isLoading} />
-      <UserSection />
+      <TopGamesSection
+        parsedHotGames={parsedHotGames}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        wishlist={wishlist}
+        setWishlist={setWishlist}
+        selectedGame={selectedGame}
+        setSelectedGame={setSelectedGame}
+        isItemOnWishlist={isItemOnWishlist}
+        setIsItemOnWishlist={setIsItemOnWishlist}
+        setSelectedGameInfo={setSelectedGameInfo}
+        ItemInWishlist={ItemInWishlist}
+      />
+      <UserSection wishlist={wishlist} setWishlist={setWishlist} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 
-function UserInput({ placeholder, setUserName }) {
-  let userName = null;
+function UserInput({ placeholder, setUser, user }) {
+  // let userName = null;
   return (
     <Input
       variant="outline"
@@ -9,9 +9,9 @@ function UserInput({ placeholder, setUserName }) {
       size="md"
       bg="white"
       px="5"
+      value={user}
       onChange={(e) => {
-        setUserName(e.target.value);
-     
+        setUser(e.target.value);
       }}
     />
   );

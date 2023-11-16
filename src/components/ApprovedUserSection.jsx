@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Card,
   CardBody,
@@ -17,9 +18,17 @@ import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { customTheme } from "src/main";
 import UsersGameModal from "src/components/UsersGameModal";
-import UserGameFilter from "src/components/UserGameFilter";
+import WishlistAccordion from "./WishlistAccordion";
 
-function ApprovedUserSection({ userGames, user }) {
+function ApprovedUserSection({
+  userGames,
+  user,
+  wishlist,
+  parsedHotGames,
+  isItemOnWishlist,
+  setIsItemOnWishlist,
+  setWishlist,
+}) {
   const [selectedGame, setSelectedGame] = useState("");
   const [selectedGameInfo, setSelectedGameInfo] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +69,7 @@ function ApprovedUserSection({ userGames, user }) {
       let parsedData = parser.parse(data);
       console.log(parsedData);
       const userSelectedGameInfo = parsedData?.items?.item;
-
+      console.log(userSelectedGameInfo);
       // decoding HTML entities for two scenarions - some games come from API with only one name, some with an array of names
       if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
         const name = userSelectedGameInfo.name[0];
@@ -68,12 +77,6 @@ function ApprovedUserSection({ userGames, user }) {
         console.log(currentName);
         userSelectedGameInfo.name["@_value"] = currentName;
         console.log(userSelectedGameInfo.name["@_value"]);
-      }
-
-      if (userSelectedGameInfo && userSelectedGameInfo.description) {
-        userSelectedGameInfo.description = he.decode(
-          userSelectedGameInfo.description
-        );
       }
 
       setSelectedGameInfo(userSelectedGameInfo);
@@ -84,8 +87,36 @@ function ApprovedUserSection({ userGames, user }) {
     }
   };
 
+  console.log(wishlist);
+  console.log(selectedGame);
+  console.log(selectedGameInfo);
   return (
     <>
+      {/* Update the user - not if the user is here, but if it is correct user for whom can be loaded the approved section */}
+      {user && (
+        <Box
+          bg={customTheme.colors.darkBrown}
+          px={{ base: "2", sm: "8", md: "10" }}
+          w="100%"
+          pb="4"
+        >
+          {wishlist?.length > 0 && (
+            <WishlistAccordion
+              wishlist={wishlist}
+              parsedHotGames={parsedHotGames}
+              isItemOnWishlist={isItemOnWishlist}
+              setIsItemOnWishlist={setIsItemOnWishlist}
+              setWishlist={setWishlist}
+              selectedGameInfo={selectedGameInfo}
+              setSelectedGameInfo={setSelectedGameInfo}
+              setSelectedGame={setSelectedGame}
+              selectedGame={selectedGame}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          )}
+        </Box>
+      )}
       <Flex
         direction="column"
         justify="center"

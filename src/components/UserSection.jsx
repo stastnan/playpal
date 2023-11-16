@@ -7,45 +7,41 @@ import { XMLParser } from "fast-xml-parser";
 import axios from "axios";
 import ApprovedUserSection from "./ApprovedUserSection";
 
-function UserSection() {
+function UserSection({ wishlist, setWishlist }) {
   const [user, setUser] = useState("");
-  const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userGames, setUserGames] = useState();
+  console.log(wishlist);
+  const fetchUserGames = async () => {
+    try {
+      setIsLoading(true);
+      const userGames = await axios.get(
+        `https://boardgamegeek.com/xmlapi2/collection?username=${user}&subtype=boardgame&own=1`
+      );
+      const data = userGames.data;
+
+      // Parsing data from XML to JS - customized code for reading attributes
+      const options = {
+        ignoreAttributes: false,
+      };
+
+      const parser = new XMLParser(options);
+      let parsedData = parser.parse(data);
+      const userGamesArray = parsedData?.items?.item;
+
+      setUserGames(userGamesArray);
+    } catch (err) {
+      throw Error("Failed to load user games");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (userName) {
-      loadApprovedUserSection();
+    if (user && user.trim() !== "") {
+      fetchUserGames(user);
     }
-  }, [user]);
-
-  function loadApprovedUserSection() {
-    if (userName) {
-      setUser(userName);
-    }
-    const fetchUserGames = async () => {
-      try {
-        setIsLoading(true);
-        const userGames = await axios.get(
-          `https://boardgamegeek.com/xmlapi2/collection?username=${userName}&subtype=boardgame&own=1`
-        );
-        const data = userGames.data;
-        // Parsing data from XML to JS - customized code for reading attributes
-        const options = {
-          ignoreAttributes: false,
-        };
-        const parser = new XMLParser(options);
-        let parsedData = parser.parse(data);
-        const userGamesArray = parsedData?.items?.item;
-        setUserGames(userGamesArray);
-      } catch (err) {
-        throw Error("Failed to load user games");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUserGames(user);
-  }
+  }, []);
 
   return (
     <>
@@ -65,19 +61,26 @@ function UserSection() {
           <HStack py="10" spacing="3">
             <UserInput
               placeholder="Your BGG username"
-              setUserName={setUserName}
               user={user}
+              setUser={setUser}
             />
             <IconButton
               variant="solid"
               colorScheme="gray"
               icon={<UnlockIcon />}
-              onClick={() => loadApprovedUserSection(userName)}
+              onClick={() => fetchUserGames(user)}
             />
           </HStack>
         </Flex>
       </Box>
-      {user && <ApprovedUserSection userGames={userGames} user={user} />}
+      {user && (
+        <ApprovedUserSection
+          userGames={userGames}
+          user={user}
+          wishlist={wishlist}
+          setWishlist={setWishlist}
+        />
+      )}
     </>
   );
 }
