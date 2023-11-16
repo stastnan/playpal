@@ -97,7 +97,7 @@ function ApprovedUserSection({
       {wishlist && isWishlistVisible && (
         <Box
           bg={customTheme.colors.darkBrown}
-          px={{ base: "2", sm: "8", md: "10" }}
+          px={{ base: "4", sm: "8", md: "10" }}
           w="100%"
           pb="4"
         >

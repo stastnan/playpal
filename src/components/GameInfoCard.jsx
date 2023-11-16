@@ -212,7 +212,7 @@ function GameInfoCard({
                         label={
                           isItemOnWishlist
                             ? "This game is already on your wishlist!"
-                            : "Add game to wishlist   (*See your wishlist after entering Player section)"
+                            : "Add game to wishlist (See it in the Player section)"
                         }
                         bg={customTheme.colors.darkBrown}
                       >
@@ -232,7 +232,7 @@ function GameInfoCard({
                   label={
                     isItemOnWishlist
                       ? "This game is already on your wishlist!"
-                      : "Add game to wishlist"
+                      : "Add game to wishlist (See it in the Player section)"
                   }
                   bg={customTheme.colors.darkBrown}
                   placement="left"

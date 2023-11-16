@@ -1,4 +1,4 @@
-import { CloseIcon } from "@chakra-ui/icons";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 import {
   Divider,
   Flex,
@@ -20,8 +20,6 @@ function Wishlist({
   setWishlist,
   setSelectedGameInfo,
   selectedGameInfo,
-  setSelectedGame,
-  isLoading,
   setIsLoading,
 }) {
   const [wishlistDetails, setWishlistDetails] = useState([]);
@@ -118,13 +116,11 @@ function Wishlist({
                 bg={customTheme.colors.darkBrown}
               >
                 <IconButton
-                  isRound={true}
                   variant="ghost"
                   colorScheme="gray"
-                  fontSize="10px"
-                  icon={<CloseIcon />}
+                  icon={<SmallCloseIcon />}
                   onClick={() => removeFromWishlist(gameDetail.id)}
-                  size="xs"
+                  size={{ base: "sm", md: "md" }}
                 />
               </Tooltip>
             </Flex>

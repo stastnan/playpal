@@ -32,8 +32,9 @@ function WishlistAccordion({
             <Box flex="1" textAlign="center">
               <Heading
                 as="h5"
-                size="sm"
+                size={{ base: "xs", sm: "sm" }}
                 py="2"
+                px="5"
                 color={customTheme.colors.lightYellow}
               >
                 Venture into your wishlist realm. Ready for revelation?
