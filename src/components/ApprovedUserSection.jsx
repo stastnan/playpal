@@ -81,6 +81,12 @@ function ApprovedUserSection({
         console.log(userSelectedGameInfo.name["@_value"]);
       }
 
+      if (userSelectedGameInfo && userSelectedGameInfo.description) {
+        userSelectedGameInfo.description = he.decode(
+          userSelectedGameInfo.description
+        );
+      }
+
       setSelectedGameInfo(userSelectedGameInfo);
     } catch (err) {
       throw Error("Failed to load selected games");

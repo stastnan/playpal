@@ -159,7 +159,7 @@ function TopGamesSection({
         right={{ base: "2", sm: "3" }}
         top={{ base: "2", sm: "3" }}
       >
-        <SearchButton content="" position="absolute" top="0" right="0" />
+        <SearchButton position="absolute" top="0" right="0" />
       </Box>
       <Flex
         direction="column"
