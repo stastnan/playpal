@@ -33,6 +33,8 @@ function TopGamesSection({
   setIsItemOnWishlist,
   setSelectedGameInfo,
   ItemInWishlist,
+  isGameInfoPage,
+  setIsGameInfoPage,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const handleCardClick = (id) => {
@@ -204,6 +206,8 @@ function TopGamesSection({
             setIsOpen={setIsOpen}
             onWishlistAdd={onWishlistAdd}
             isItemOnWishlist={isItemOnWishlist}
+            isGameInfoPage={isGameInfoPage}
+            setIsGameInfoPage={setIsGameInfoPage}
           />
         </Box>
       )}

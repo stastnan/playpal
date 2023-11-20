@@ -26,7 +26,10 @@ function GameInfoCard({
   setIsOpen,
   onWishlistAdd,
   isItemOnWishlist,
+  isGameInfoPage,
+  setIsGameInfoPage,
 }) {
+  console.log(isGameInfoPage);
   const [currentGame, setCurrentGame] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const cardRef = useRef();
@@ -35,7 +38,6 @@ function GameInfoCard({
     const fetchGameInfo = async () => {
       try {
         setIsLoading(true);
-
         const game = await axios.get(
           `https://boardgamegeek.com/xmlapi2/thing?id=${selectedGame["@_id"]}`
         );
@@ -75,9 +77,9 @@ function GameInfoCard({
     fetchGameInfo();
   }, [selectedGame]);
 
-  useEffect(() => {
-    cardRef.current.focus();
-  }, [currentGame]);
+  // useEffect(() => {
+  //   cardRef.current.focus();
+  // }, [currentGame]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -120,22 +122,24 @@ function GameInfoCard({
             {!isBigScreen && (
               <Flex justify="space-between" align="center" w="100%" p="5">
                 <Skeleton isLoaded={!isLoading}>
-                  <Heading size={{ base: "sm", sm: "md" }} ref={cardRef}>
+                  <Heading size={{ base: "sm", sm: "md" }}>
                     {currentGame?.name["@_value"]}
                     <Badge>{currentGame?.yearpublished["@_value"]}</Badge>
                   </Heading>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading}>
-                  <IconButton
-                    isRound={true}
-                    variant="solid"
-                    colorScheme="gray"
-                    fontSize="10px"
-                    size="xs"
-                    icon={<CloseIcon />}
-                    onClick={handleClose}
-                  />
-                </Skeleton>
+                {!isGameInfoPage && (
+                  <Skeleton isLoaded={!isLoading}>
+                    <IconButton
+                      isRound={true}
+                      variant="solid"
+                      colorScheme="gray"
+                      fontSize="10px"
+                      size="xs"
+                      icon={<CloseIcon />}
+                      onClick={handleClose}
+                    />
+                  </Skeleton>
+                )}
               </Flex>
             )}
             <Skeleton isLoaded={!isLoading} borderRadius="10">
@@ -156,16 +160,17 @@ function GameInfoCard({
                       {currentGame?.name["@_value"]}
                       <Badge>{`(${currentGame?.yearpublished["@_value"]})`}</Badge>
                     </Heading>
-
-                    <IconButton
-                      isRound={true}
-                      variant="solid"
-                      colorScheme="gray"
-                      fontSize="10px"
-                      size="xs"
-                      icon={<CloseIcon />}
-                      onClick={handleClose}
-                    />
+                    {!isGameInfoPage && (
+                      <IconButton
+                        isRound={true}
+                        variant="solid"
+                        colorScheme="gray"
+                        fontSize="10px"
+                        size="xs"
+                        icon={<CloseIcon />}
+                        onClick={handleClose}
+                      />
+                    )}
                   </Flex>
                 </Skeleton>
               )}

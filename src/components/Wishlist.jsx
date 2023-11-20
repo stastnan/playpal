@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { customTheme } from "src/main";
 import he from "he";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 
 function Wishlist({
   wishlist,
@@ -21,15 +22,21 @@ function Wishlist({
   setSelectedGameInfo,
   selectedGameInfo,
   setIsLoading,
+  selectedGame,
+  isGameInfoPage,
+  onWishlistAdd,
+  setIsGameInfoPage,
 }) {
+  console.log(isGameInfoPage);
   const [wishlistDetails, setWishlistDetails] = useState([]);
 
   const removeFromWishlist = (itemId) => {
     setWishlist((prevWishlist) => prevWishlist.filter((id) => id !== itemId));
   };
 
+  const { gameId } = useParams();
+
   useEffect(() => {
-    console.log("start");
     const fetchWishlistDetails = async () => {
       setIsLoading(true);
       const detailsPromises = wishlist.map((itemId) =>
@@ -106,9 +113,14 @@ function Wishlist({
             py="2"
           >
             <Flex justify="space-between" align="center">
-              <Text fontSize={{ base: "xs", sm: "sm" }} px="2" noOfLines={1}>
-                {gameDetail.gameName}
-              </Text>
+              <Link
+                to={`/games/${gameDetail.id}`}
+                onClick={setIsGameInfoPage(true)}
+              >
+                <Text fontSize={{ base: "xs", sm: "sm" }} px="2" noOfLines={1}>
+                  {gameDetail.gameName}
+                </Text>
+              </Link>
               <Tooltip
                 color="white"
                 hasArrow
@@ -120,7 +132,7 @@ function Wishlist({
                   colorScheme="gray"
                   icon={<SmallCloseIcon />}
                   onClick={() => removeFromWishlist(gameDetail.id)}
-                  size={{ base: "sm", md: "md" }}
+                  size={{ base: "xs", md: "sm" }}
                 />
               </Tooltip>
             </Flex>

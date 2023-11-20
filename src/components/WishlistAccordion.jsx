@@ -22,6 +22,8 @@ function WishlistAccordion({
   selectedGameInfo,
   isLoading,
   setIsLoading,
+  onWishlistAdd,
+  setIsGameInfoPage,
 }) {
   console.log(selectedGame);
   return (
@@ -58,11 +60,13 @@ function WishlistAccordion({
               setIsItemOnWishlist={setIsItemOnWishlist}
               setWishlist={setWishlist}
               setSelectedGame={setSelectedGame}
+              onWishlistAdd={onWishlistAdd}
               setSelectedGameInfo={setSelectedGameInfo}
               selectedGame={selectedGame}
               selectedGameInfo={selectedGameInfo}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
+              setIsGameInfoPage={setIsGameInfoPage}
             />
           </Box>
         </AccordionPanel>

@@ -30,6 +30,8 @@ function ApprovedUserSection({
   setWishlist,
   isWishlistVisible,
   setIsWishlistVisible,
+  isGameInfoPage,
+  setIsGameInfoPage,
 }) {
   const [selectedGame, setSelectedGame] = useState("");
   const [selectedGameInfo, setSelectedGameInfo] = useState();
@@ -120,6 +122,8 @@ function ApprovedUserSection({
               selectedGame={selectedGame}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
+              isGameInfoPage={isGameInfoPage}
+              setIsGameInfoPage={setIsGameInfoPage}
             />
           )}
         </Box>

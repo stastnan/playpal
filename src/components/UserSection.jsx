@@ -7,7 +7,12 @@ import { XMLParser } from "fast-xml-parser";
 import axios from "axios";
 import ApprovedUserSection from "./ApprovedUserSection";
 
-function UserSection({ wishlist, setWishlist }) {
+function UserSection({
+  wishlist,
+  setWishlist,
+  isGameInfoPage,
+  setIsGameInfoPage,
+}) {
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userGames, setUserGames] = useState();
@@ -85,6 +90,8 @@ function UserSection({ wishlist, setWishlist }) {
           setWishlist={setWishlist}
           isWishlistVisible={isWishlistVisible}
           setIsWishlistVisible={setIsWishlistVisible}
+          isGameInfoPage={isGameInfoPage}
+          setIsGameInfoPage={setIsGameInfoPage}
         />
       )}
     </>

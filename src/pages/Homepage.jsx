@@ -5,10 +5,11 @@ import TopGamesSection from "src/components/TopGamesSection";
 import UserSection from "src/components/UserSection";
 import Hero from "src/components/ui/Hero";
 
-function Homepage() {
+function Homepage({ isGameInfoPage, setIsGameInfoPage }) {
   const [parsedHotGames, setParsedHotGames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState();
+
   const [wishlist, setWishlist] = useState(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
     return savedWishlist || [];
@@ -74,8 +75,15 @@ function Homepage() {
         setIsItemOnWishlist={setIsItemOnWishlist}
         setSelectedGameInfo={setSelectedGameInfo}
         ItemInWishlist={ItemInWishlist}
+        isGameInfoPage={isGameInfoPage}
+        setIsGameInfoPage={setIsGameInfoPage}
       />
-      <UserSection wishlist={wishlist} setWishlist={setWishlist} />
+      <UserSection
+        wishlist={wishlist}
+        setWishlist={setWishlist}
+        isGameInfoPage={isGameInfoPage}
+        setIsGameInfoPage={setIsGameInfoPage}
+      />
     </>
   );
 }

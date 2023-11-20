@@ -17,10 +17,10 @@ function Search() {
         setIsLoading(true);
 
         const data = await axios(
-          `https://boardgamegeek.com/xmlapi2/search?query=${searchQuery}`
+          `https://boardgamegeek.com/xmlapi2/search?query=${searchQuery}&type=boardgame`
         );
 
-        if (!data?.data) throw Error();
+        if (!data?.data) throw Error("Failed to load games!");
 
         console.log(data.data);
         const results = data.data;
