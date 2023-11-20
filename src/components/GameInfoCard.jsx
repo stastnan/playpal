@@ -103,7 +103,7 @@ function GameInfoCard({
     <Card
       direction={{ sm: "column", xl: "row" }}
       variant="outline"
-      mt={20}
+      mt={isGameInfoPage ? "" : 20}
       bgColor={customTheme.colors.lightYellow}
       border="none"
       position="relative"

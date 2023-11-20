@@ -6,6 +6,7 @@ import {
   Image,
   Input,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
@@ -15,6 +16,13 @@ import searchBanner from "src/assets/images/banner-search.png";
 import { customTheme } from "src/main";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+
+import alternativeBannerBase from "src/assets/images/alternative-banner/banner-search-sm.jpg";
+import alternativeBannerSM from "src/assets/images/alternative-banner/banner-search-md.jpg";
+import alternativeBannerMD from "src/assets/images/alternative-banner/banner-search-lg.jpg";
+import alternativeBannerLG from "src/assets/images/alternative-banner/banner-search-xl.jpg";
+import alternativeBannerXL from "src/assets/images/alternative-banner/banner-search-2xl.jpg";
+import alternativeBanner2XL from "src/assets/images/alternative-banner/banner-search-3xl.jpg";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +66,20 @@ function Search() {
     }
   }, [searchQuery]);
 
+  const imageSource = useBreakpointValue(
+    {
+      base: alternativeBannerBase,
+      sm: alternativeBannerSM,
+      md: alternativeBannerMD,
+      lg: alternativeBannerLG,
+      xl: alternativeBannerXL,
+      "2xl": alternativeBanner2XL,
+    },
+    {
+      fallback: "alternativeBannerLG",
+    }
+  );
+
   return (
     <Box
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 38%)`}
@@ -67,7 +89,7 @@ function Search() {
       objectFit="cover"
     >
       <Image
-        src={searchBanner}
+        src={imageSource}
         w="100%"
         alt="banner for search page - fantasy landscape and shelf with boardgames"
       />
