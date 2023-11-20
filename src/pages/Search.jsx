@@ -1,10 +1,20 @@
-import { Box, Flex, Heading, Image, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect } from "react";
 import Listing from "src/components/Listing";
 import searchBanner from "src/assets/images/banner-search.png";
 import { customTheme } from "src/main";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +44,7 @@ function Search() {
         // const parsedGames = parsedData;
         const gamesArray = parsedData?.items?.item;
         console.log(gamesArray);
+
         setGames(gamesArray);
       } catch (err) {
         throw Error("Failed to load games!");
@@ -53,6 +64,7 @@ function Search() {
       color={customTheme.colors.lightYellow}
       h="100vh"
       overflow="hidden"
+      objectFit="cover"
     >
       <Image
         src={searchBanner}
@@ -60,6 +72,15 @@ function Search() {
         alt="banner for search page - fantasy landscape and shelf with boardgames"
       />
       <Box p="4">
+        <Link to="/">
+          <IconButton
+            icon={<ArrowBackIcon />}
+            isRound
+            variant="ghost"
+            size={{ base: "xs", sm: "md" }}
+            color={customTheme.colors.lightBrown}
+          />
+        </Link>
         <Flex align="center" justify="center" py="5" direction="column" gap="5">
           <Heading size={{ base: "lg", sm: "xl" }}>Gamefinder's Haven</Heading>
           <Text fontSize={{ base: "sm", sm: "md" }} textAlign="center">
