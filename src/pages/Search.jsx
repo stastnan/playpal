@@ -12,7 +12,6 @@ import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect } from "react";
 import Listing from "src/components/Listing";
-import searchBanner from "src/assets/images/banner-search.png";
 import { customTheme } from "src/main";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
