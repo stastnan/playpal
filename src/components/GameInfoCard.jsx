@@ -132,7 +132,7 @@ function GameInfoCard({
                     <IconButton
                       isRound={true}
                       variant="solid"
-                      colorScheme="gray"
+                      color={customTheme.colors.lightBrown}
                       fontSize="10px"
                       size="xs"
                       icon={<CloseIcon />}
@@ -164,7 +164,7 @@ function GameInfoCard({
                       <IconButton
                         isRound={true}
                         variant="solid"
-                        colorScheme="gray"
+                        color={customTheme.colors.lightBrown}
                         fontSize="10px"
                         size="xs"
                         icon={<CloseIcon />}
@@ -222,6 +222,7 @@ function GameInfoCard({
                         bg={customTheme.colors.darkBrown}
                       >
                         <IconButton
+                          color={customTheme.colors.lightBrown}
                           isRound
                           icon={isItemOnWishlist ? <CheckIcon /> : <AddIcon />}
                           onClick={() => onWishlistAdd(currentGame["@_id"])}
@@ -244,6 +245,7 @@ function GameInfoCard({
                   color="white"
                 >
                   <IconButton
+                    color={customTheme.colors.lightBrown}
                     isRound
                     icon={isItemOnWishlist ? <CheckIcon /> : <AddIcon />}
                     size="sm"

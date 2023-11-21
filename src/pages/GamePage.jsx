@@ -54,6 +54,8 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
     >
       <Link to="/">
         <IconButton
+          isRound
+          color={customTheme.colors.lightBrown}
           icon={<ArrowBackIcon />}
           onClick={setIsGameInfoPage(false)}
         />

@@ -22,7 +22,7 @@ function UsersGameModal({ isOpen, onClose, selectedGameInfo, isLoading }) {
         <ModalContent>
           <ModalHeader align="center">
             <Skeleton isLoaded={!isLoading}>
-              <Heading as="h4" size={{ base: "sm", sm: "md" }} pt="5">
+              <Heading as="h4" size={{ base: "sm", sm: "md" }} mt="5">
                 {selectedGameInfo?.name["@_value"]}
               </Heading>
             </Skeleton>

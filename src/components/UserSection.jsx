@@ -78,6 +78,7 @@ function UserSection({
               colorScheme="gray"
               icon={<UnlockIcon />}
               onClick={() => fetchUserGames(user)}
+              isRound
             />
           </HStack>
         </Flex>

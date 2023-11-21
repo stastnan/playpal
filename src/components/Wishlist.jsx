@@ -117,7 +117,15 @@ function Wishlist({
                 to={`/games/${gameDetail.id}`}
                 onClick={setIsGameInfoPage(true)}
               >
-                <Text fontSize={{ base: "xs", sm: "sm" }} px="2" noOfLines={1}>
+                <Text
+                  fontSize={{ base: "xs", sm: "sm" }}
+                  px="2"
+                  noOfLines={1}
+                  _hover={{
+                    fontWeight: "bold",
+                    color: customTheme.colors.darkBrown,
+                  }}
+                >
                   {gameDetail.gameName}
                 </Text>
               </Link>
@@ -128,8 +136,8 @@ function Wishlist({
                 bg={customTheme.colors.darkBrown}
               >
                 <IconButton
+                  isRound
                   variant="ghost"
-                  colorScheme="gray"
                   icon={<SmallCloseIcon />}
                   onClick={() => removeFromWishlist(gameDetail.id)}
                   size={{ base: "xs", md: "sm" }}
