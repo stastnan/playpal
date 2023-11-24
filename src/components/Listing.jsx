@@ -1,7 +1,10 @@
 import { Badge, Box, List, ListItem, Skeleton, Text } from "@chakra-ui/react";
 import he from "he";
+import { Link, useParams } from "react-router-dom";
+import GamePage from "src/pages/GamePage";
 
 function Listing({ games, isLoading }) {
+  const { gameId } = useParams();
   console.log(games);
 
   return (
@@ -11,7 +14,9 @@ function Listing({ games, isLoading }) {
           {games?.map((game) =>
             game.name && game.name["@_value"] ? (
               <ListItem key={game["@_id"]} py="1">
-                {he.decode(game.name["@_value"])}
+                <Link to="/games/:gameId">
+                  {he.decode(game.name["@_value"])}
+                </Link>
               </ListItem>
             ) : (
               ""

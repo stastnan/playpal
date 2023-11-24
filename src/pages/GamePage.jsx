@@ -10,6 +10,7 @@ import { customTheme } from "src/main";
 
 function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
   console.log(isGameInfoPage);
+  //FIX: state for isGameInfoPage
 
   const { gameId } = useParams();
   const [gameDetail, setGameDetail] = useState();
@@ -20,7 +21,7 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
           `https://boardgamegeek.com/xmlapi2/thing?id=${gameId}`
         );
         const data = response.data;
-
+        console.log(data);
         // Parsing data from XML to JS - customized code for reading attributes
         const options = {
           ignoreAttributes: false,
@@ -29,7 +30,7 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
         const parser = new XMLParser(options);
         let parsedData = parser.parse(data);
         const gameInfo = parsedData?.items?.item;
-
+        console.log(gameInfo);
         if (gameInfo && gameInfo.name[0]) {
           const name = gameInfo.name[0];
           const currentName = he.decode(name["@_value"]);

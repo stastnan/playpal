@@ -74,6 +74,7 @@ function ApprovedUserSection({
       console.log(parsedData);
       const userSelectedGameInfo = parsedData?.items?.item;
       console.log(userSelectedGameInfo);
+
       // decoding HTML entities for two scenarions - some games come from API with only one name, some with an array of names
       if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
         const name = userSelectedGameInfo.name[0];
@@ -87,6 +88,7 @@ function ApprovedUserSection({
         userSelectedGameInfo.description = he.decode(
           userSelectedGameInfo.description
         );
+        console.log(userSelectedGameInfo.description);
       }
 
       setSelectedGameInfo(userSelectedGameInfo);
@@ -192,10 +194,10 @@ function ApprovedUserSection({
                   </Button>
                   <Button
                     size={{ base: "md", sm: "sm" }}
-                    onClick={onOpen}
                     bg="#BB8158"
                     colorScheme={customTheme.colors.lightBrown}
                     color="black"
+                    isDisabled
                     _hover={{
                       background: "#F9DAA3",
                       color: "black",

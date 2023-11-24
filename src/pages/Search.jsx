@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Listing from "src/components/Listing";
 import { customTheme } from "src/main";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -27,6 +27,14 @@ function Search() {
   const [isLoading, setIsLoading] = useState(false);
   const [games, setGames] = useState();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     const search = async (searchQuery) => {
@@ -56,7 +64,7 @@ function Search() {
       } catch (err) {
         throw Error("Failed to load games!");
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     };
 
@@ -83,16 +91,15 @@ function Search() {
     <Box
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 38%)`}
       color={customTheme.colors.lightYellow}
-      h="100vh"
-      overflow="hidden"
-      objectFit="cover"
+      minH="100vh"
+      // objectFit="cover"
     >
       <Image
         src={imageSource}
         w="100%"
         alt="banner for search page - fantasy landscape and shelf with boardgames"
       />
-      <Box p="4">
+      <Box p="4" overflow="hidden">
         <Link to="/">
           <IconButton
             icon={<ArrowBackIcon />}
@@ -114,24 +121,27 @@ function Search() {
             color={customTheme.colors.lightYellow}
             w="50%"
             value={searchQuery}
+            ref={inputRef}
             placeholder="Search..."
             onChange={(e) => setSearchQuery(e.target.value)}
             _placeholder={{ color: customTheme.colors.lightYellow }}
           />
         </Flex>
-        <Box p="4">
-          {searchQuery && (
-            <Box overflow="hidden">
-              <Heading as="h3">Results by: {searchQuery}</Heading>
-              {games?.length > 0 && (
-                <Listing isLoading={isLoading} games={games} />
-              )}
-            </Box>
+        <Box overflow="hidden">
+          <Box p="4" maxH="1042px">
+            {searchQuery && (
+              <Box>
+                <Heading as="h3">Results by: {searchQuery}</Heading>
+                {games?.length > 0 && (
+                  <Listing isLoading={isLoading} games={games} />
+                )}
+              </Box>
+            )}
+          </Box>
+          {searchQuery && !isLoading && games?.length <= 0 && (
+            <Text>Sorry, nothing was found</Text>
           )}
         </Box>
-        {searchQuery && !isLoading && games?.length <= 0 && (
-          <Text>Sorry, nothing was found</Text>
-        )}
       </Box>
     </Box>
   );
