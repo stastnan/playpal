@@ -6,6 +6,7 @@ import he from "he";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import GameInfoCard from "src/components/GameInfoCard";
+import AlternativeBanner from "src/components/ui/AlternativeBanner";
 import { customTheme } from "src/main";
 
 function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
@@ -53,8 +54,10 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
       color={customTheme.colors.lightYellow}
       minH="100vh"
     >
-      <Link to="/">
+      <AlternativeBanner />
+      <Link to="/search">
         <IconButton
+          mt="5"
           isRound
           color={customTheme.colors.lightBrown}
           icon={<ArrowBackIcon />}

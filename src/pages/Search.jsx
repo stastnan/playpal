@@ -1,13 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Image,
-  Input,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect, useRef } from "react";
@@ -15,13 +6,7 @@ import Listing from "src/components/Listing";
 import { customTheme } from "src/main";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-
-import alternativeBannerBase from "src/assets/images/alternative-banner/banner-search-sm.jpg";
-import alternativeBannerSM from "src/assets/images/alternative-banner/banner-search-md.jpg";
-import alternativeBannerMD from "src/assets/images/alternative-banner/banner-search-lg.jpg";
-import alternativeBannerLG from "src/assets/images/alternative-banner/banner-search-xl.jpg";
-import alternativeBannerXL from "src/assets/images/alternative-banner/banner-search-2xl.jpg";
-import alternativeBanner2XL from "src/assets/images/alternative-banner/banner-search-3xl.jpg";
+import AlternativeBanner from "src/components/ui/AlternativeBanner";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -73,32 +58,13 @@ function Search() {
     }
   }, [searchQuery]);
 
-  const imageSource = useBreakpointValue(
-    {
-      base: alternativeBannerBase,
-      sm: alternativeBannerSM,
-      md: alternativeBannerMD,
-      lg: alternativeBannerLG,
-      xl: alternativeBannerXL,
-      "2xl": alternativeBanner2XL,
-    },
-    {
-      fallback: "alternativeBannerLG",
-    }
-  );
-
   return (
     <Box
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 38%)`}
       color={customTheme.colors.lightYellow}
       minH="100vh"
-      // objectFit="cover"
     >
-      <Image
-        src={imageSource}
-        w="100%"
-        alt="banner for search page - fantasy landscape and shelf with boardgames"
-      />
+      <AlternativeBanner />
       <Box p="4" overflow="hidden">
         <Link to="/">
           <IconButton

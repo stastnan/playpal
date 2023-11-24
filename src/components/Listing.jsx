@@ -14,7 +14,7 @@ function Listing({ games, isLoading }) {
           {games?.map((game) =>
             game.name && game.name["@_value"] ? (
               <ListItem key={game["@_id"]} py="1">
-                <Link to="/games/:gameId">
+                <Link to={`/games/${game["@_id"]}`}>
                   {he.decode(game.name["@_value"])}
                 </Link>
               </ListItem>
