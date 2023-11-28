@@ -1,6 +1,8 @@
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Footer from "src/components/Footer";
 import TopGamesSection from "src/components/TopGamesSection";
 import UserSection from "src/components/UserSection";
 import Hero from "src/components/ui/Hero";
@@ -52,7 +54,7 @@ function Homepage({ isGameInfoPage, setIsGameInfoPage }) {
 
         setParsedHotGames(hotGamesArray);
       } catch (err) {
-        throw Error("Failed to load hot games");
+        toast.error("Failed to load hot games");
       } finally {
         setIsLoading(false);
       }
@@ -84,6 +86,7 @@ function Homepage({ isGameInfoPage, setIsGameInfoPage }) {
         isGameInfoPage={isGameInfoPage}
         setIsGameInfoPage={setIsGameInfoPage}
       />
+      <Footer />
     </>
   );
 }

@@ -18,6 +18,7 @@ import { XMLParser } from "fast-xml-parser";
 import { useState, useEffect, useRef } from "react";
 import { AddIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { customTheme } from "src/main";
+import { toast } from "react-toastify";
 
 let currentName = null;
 
@@ -69,7 +70,7 @@ function GameInfoCard({
 
         setCurrentGame(gameInfo);
       } catch (err) {
-        throw Error("Failed to load game information");
+        toast.error("Failed to load game information");
       } finally {
         setIsLoading(false);
       }

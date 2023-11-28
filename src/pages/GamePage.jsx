@@ -49,28 +49,29 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
 
   return (
     <Box
-      p="5"
       bgGradient={`linear-gradient(0deg, ${customTheme.colors.lightBrown} 0%, ${customTheme.colors.darkBrown} 38%)`}
       color={customTheme.colors.lightYellow}
       minH="100vh"
     >
       <AlternativeBanner />
-      <Link to="/search">
-        <IconButton
-          mt="5"
-          isRound
-          color={customTheme.colors.lightBrown}
-          icon={<ArrowBackIcon />}
-          onClick={setIsGameInfoPage(false)}
-        />
-      </Link>
-      {gameDetail && (
-        <GameInfoCard
-          setIsGameInfoPage={setIsGameInfoPage}
-          selectedGame={gameDetail}
-          isGameInfoPage={isGameInfoPage}
-        />
-      )}
+      <Box p="5">
+        <Link to="/search">
+          <IconButton
+            mt="5"
+            isRound
+            color={customTheme.colors.lightBrown}
+            icon={<ArrowBackIcon />}
+            onClick={setIsGameInfoPage(false)}
+          />
+        </Link>
+        {gameDetail && (
+          <GameInfoCard
+            setIsGameInfoPage={setIsGameInfoPage}
+            selectedGame={gameDetail}
+            isGameInfoPage={isGameInfoPage}
+          />
+        )}
+      </Box>
     </Box>
   );
 }

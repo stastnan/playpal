@@ -20,6 +20,7 @@ import SearchButton from "./SearchButton";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import he from "he";
+import { toast } from "react-toastify";
 
 function TopGamesSection({
   parsedHotGames,
@@ -127,7 +128,7 @@ function TopGamesSection({
             setIsOpen(true);
           }
         } catch (err) {
-          throw new Error("Failed to load selected games");
+          toast.error("Failed to load selected games");
         } finally {
           setIsLoading(false);
         }

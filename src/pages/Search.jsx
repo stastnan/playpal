@@ -7,6 +7,7 @@ import { customTheme } from "src/main";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import AlternativeBanner from "src/components/ui/AlternativeBanner";
+import { toast } from "react-toastify";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +48,7 @@ function Search() {
 
         setGames(gamesArray);
       } catch (err) {
-        throw Error("Failed to load games!");
+        toast.error("Failed to load games!");
       } finally {
         setIsLoading(false);
       }
@@ -65,13 +66,12 @@ function Search() {
       minH="100vh"
     >
       <AlternativeBanner />
-      <Box p="4" overflow="hidden">
+      <Box p="5" overflow="hidden">
         <Link to="/">
           <IconButton
             icon={<ArrowBackIcon />}
             isRound
             variant="ghost"
-            size={{ base: "xs", sm: "md" }}
             color={customTheme.colors.lightBrown}
           />
         </Link>
@@ -104,8 +104,10 @@ function Search() {
               </Box>
             )}
           </Box>
-          {searchQuery && !isLoading && games?.length <= 0 && (
-            <Text>Sorry, nothing was found</Text>
+          {!games && searchQuery && (
+            <Text fontStyle="italic" px="5">
+              Sorry, nothing was found...
+            </Text>
           )}
         </Box>
       </Box>

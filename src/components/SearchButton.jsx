@@ -11,7 +11,6 @@ function SearchButton() {
         icon={<SearchIcon />}
         isRound
         variant="ghost"
-        size={{ base: "xs", sm: "md" }}
         color={customTheme.colors.lightBrown}
       >
         <Search />

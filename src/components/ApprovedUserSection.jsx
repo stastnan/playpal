@@ -19,6 +19,7 @@ import { XMLParser } from "fast-xml-parser";
 import { customTheme } from "src/main";
 import UsersGameModal from "src/components/UsersGameModal";
 import WishlistAccordion from "./WishlistAccordion";
+import { toast } from "react-toastify";
 
 function ApprovedUserSection({
   userGames,
@@ -93,7 +94,7 @@ function ApprovedUserSection({
 
       setSelectedGameInfo(userSelectedGameInfo);
     } catch (err) {
-      throw Error("Failed to load selected games");
+      toast.error("Failed to load selected games");
     } finally {
       setIsLoading(false);
     }
@@ -130,87 +131,89 @@ function ApprovedUserSection({
           )}
         </Box>
       )}
-
-      <Flex
-        direction="column"
-        justify="center"
-        align="center"
-        gap="5"
-        p="4"
-        w="100%"
-        bgGradient={`linear-gradient(0deg, black 0%, ${customTheme.colors.darkBrown} 68%)`}
-      >
-        {selectedGameInfo && (
-          <Heading
-            size={{ base: "lg", sm: "xl" }}
-            color="white"
-            py="5"
-            align="center"
-          >{`This is the personal boardgames shelf of ${user}`}</Heading>
-        )}
-        {/* <UserGameFilter userGames={userGames} /> */}
-        <SimpleGrid
-          spacing="5"
-          templateColumns="repeat(auto-fill, minmax(214px, 1fr))"
+      {selectedGameInfo && (
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+          gap="5"
+          p="4"
+          w="100%"
+          pb="20"
+          bgGradient={`linear-gradient(0deg, black 0%, ${customTheme.colors.darkBrown} 68%)`}
         >
-          {userGames?.map((game) => (
-            <Card
+          {selectedGameInfo && (
+            <Heading
+              size={{ base: "lg", sm: "xl" }}
+              color="white"
+              py="5"
               align="center"
-              key={game["@_objectid"]}
-              bg={customTheme.colors.lightYellow}
-            >
-              <CardHeader>
-                <Heading
-                  align="center"
-                  as="h3"
-                  fontSize={{
-                    base: "xxs",
-                    sm: "sm",
-                    md: "md",
-                    lg: "lg",
-                  }}
-                  noOfLines={2}
-                >
-                  {game.name["#text"]}
-                </Heading>
-              </CardHeader>
-              <CardBody display="flex" align="center" justify="center">
-                <Image src={game.thumbnail} objectFit="scale-down" />
-              </CardBody>
-              <CardFooter>
-                <HStack spacing={{ base: 5, sm: 2 }}>
-                  <Button
-                    size={{ base: "md", sm: "sm" }}
-                    onClick={() => handleCardClick(game["@_objectid"])}
-                    bg="#BB8158"
-                    color="black"
-                    colorScheme={customTheme.colors.lightBrown}
-                    _hover={{
-                      background: "#F9DAA3",
-                      color: "black",
+            >{`This is the personal boardgames shelf of ${user}`}</Heading>
+          )}
+          {/* <UserGameFilter userGames={userGames} /> */}
+          <SimpleGrid
+            spacing="5"
+            templateColumns="repeat(auto-fill, minmax(214px, 1fr))"
+          >
+            {userGames?.map((game) => (
+              <Card
+                align="center"
+                key={game["@_objectid"]}
+                bg={customTheme.colors.lightYellow}
+              >
+                <CardHeader>
+                  <Heading
+                    align="center"
+                    as="h3"
+                    fontSize={{
+                      base: "xxs",
+                      sm: "sm",
+                      md: "md",
+                      lg: "lg",
                     }}
+                    noOfLines={2}
                   >
-                    Game info
-                  </Button>
-                  <Button
-                    size={{ base: "md", sm: "sm" }}
-                    bg="#BB8158"
-                    colorScheme={customTheme.colors.lightBrown}
-                    color="black"
-                    isDisabled
-                    _hover={{
-                      background: "#F9DAA3",
-                      color: "black",
-                    }}
-                  >
-                    Game stats
-                  </Button>
-                </HStack>
-              </CardFooter>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </Flex>
+                    {game.name["#text"]}
+                  </Heading>
+                </CardHeader>
+                <CardBody display="flex" align="center" justify="center">
+                  <Image src={game.thumbnail} objectFit="scale-down" />
+                </CardBody>
+                <CardFooter>
+                  <HStack spacing={{ base: 5, sm: 2 }}>
+                    <Button
+                      size={{ base: "md", sm: "sm" }}
+                      onClick={() => handleCardClick(game["@_objectid"])}
+                      bg="#BB8158"
+                      color="black"
+                      colorScheme={customTheme.colors.lightBrown}
+                      _hover={{
+                        background: "#F9DAA3",
+                        color: "black",
+                      }}
+                    >
+                      Game info
+                    </Button>
+                    <Button
+                      size={{ base: "md", sm: "sm" }}
+                      bg="#BB8158"
+                      colorScheme={customTheme.colors.lightBrown}
+                      color="black"
+                      isDisabled
+                      _hover={{
+                        background: "#F9DAA3",
+                        color: "black",
+                      }}
+                    >
+                      Game stats
+                    </Button>
+                  </HStack>
+                </CardFooter>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </Flex>
+      )}
 
       {selectedGameInfo && (
         <UsersGameModal

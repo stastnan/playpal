@@ -1,7 +1,6 @@
 import { Badge, Box, List, ListItem, Skeleton, Text } from "@chakra-ui/react";
 import he from "he";
 import { Link, useParams } from "react-router-dom";
-import GamePage from "src/pages/GamePage";
 
 function Listing({ games, isLoading }) {
   const { gameId } = useParams();

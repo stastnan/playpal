@@ -1,4 +1,6 @@
 import { Box, Flex, HStack, Heading, IconButton, Text } from "@chakra-ui/react";
+import { toast } from "react-toastify";
+
 import { UnlockIcon } from "@chakra-ui/icons";
 import { customTheme } from "src/main";
 import UserInput from "src/components/ui/UserInput";
@@ -38,7 +40,7 @@ function UserSection({
       setUserGames(userGamesArray);
       setIsWishlistVisible(true);
     } catch (err) {
-      throw Error("Failed to load user games");
+      toast.error("Player's games weren't loaded! Is the user name correct?");
     } finally {
       setIsLoading(false);
     }

@@ -15,6 +15,7 @@ import { customTheme } from "src/main";
 import he from "he";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Wishlist({
   wishlist,
@@ -47,7 +48,7 @@ function Wishlist({
         const wishlistDetailsData = await Promise.all(detailsPromises);
         setWishlistDetails(wishlistDetailsData);
       } catch (error) {
-        console.error("Error fetching wishlist details:", error);
+        toast.error("Error fetching wishlist details:", error);
       } finally {
         setIsLoading(false);
       }
