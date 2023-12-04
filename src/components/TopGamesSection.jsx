@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Box,
@@ -17,32 +17,28 @@ import GameSwiperImage from "./GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
 import SearchButton from "./SearchButton";
-import axios from "axios";
-import { XMLParser } from "fast-xml-parser";
-import he from "he";
-import { toast } from "react-toastify";
 
-function TopGamesSection({
-  parsedHotGames,
-  isLoading,
-  setIsLoading,
-  wishlist,
-  setWishlist,
-  selectedGame,
-  setSelectedGame,
-  isItemOnWishlist,
-  setIsItemOnWishlist,
-  setSelectedGameInfo,
-  ItemInWishlist,
-  isGameInfoPage,
-  setIsGameInfoPage,
-}) {
+import {
+  useGetGameByIdQuery,
+  useGetHotGamesQuery,
+} from "src/utils/hotGamesApi";
+
+function TopGamesSection() {
   const [isOpen, setIsOpen] = useState(false);
-  const handleCardClick = (id) => {
-    const selectedGame = parsedHotGames.find((game) => game["@_id"] === id);
-    setIsOpen(true);
-    setSelectedGame(selectedGame);
-  };
+
+  const { hotGames, isError, error, isLoading, isSuccess } =
+    useGetHotGamesQuery();
+  //   const { gameData, gameIsError, gameError, gameIsLoading, gameIsSuccess } =
+  //     useGetGameByIdQuery(id);
+
+  // const id = () => {
+
+  // }
+
+  // const handleCardClick = (id) => {
+  //   const selectedGame = hotGames.find((game) => game["@_id"] === id);
+  //   setIsOpen(true);
+  // };
 
   const slidesPerView = useBreakpointValue(
     {
@@ -73,81 +69,80 @@ function TopGamesSection({
     }
   );
 
-  const onWishlistAdd = async (id) => {
-    setWishlist((prevWishlist) => {
-      const newItemInWishlist = ItemInWishlist(id);
-      const updatedWishlist = newItemInWishlist
-        ? prevWishlist.filter((item) => item !== id)
-        : [...prevWishlist, id];
+  // const onWishlistAdd = async (id) => {
+  //   setWishlist((prevWishlist) => {
+  //     const newItemInWishlist = ItemInWishlist(id);
+  //     const updatedWishlist = newItemInWishlist
+  //       ? prevWishlist.filter((item) => item !== id)
+  //       : [...prevWishlist, id];
 
-      const fetchAndHandleGame = async (id) => {
-        try {
-          setIsLoading(true);
-          const userSelectedGame = await axios.get(
-            `https://boardgamegeek.com/xmlapi2/thing?id=${id}`
-          );
-          const data = userSelectedGame.data;
-          // Parsing data from XML to JS - customized code for reading attributes
-          const options = {
-            ignoreAttributes: false,
-            allowBooleanAttributes: true,
-          };
-          console.log(data);
-          const parser = new XMLParser(options);
-          let parsedData = parser.parse(data);
-          console.log(parsedData);
-          const userSelectedGameInfo = parsedData?.items?.item;
+  //     const fetchAndHandleGame = async (id) => {
+  //       try {
+  //         setIsLoading(true);
+  //         const userSelectedGame = await axios.get(
+  //           `https://boardgamegeek.com/xmlapi2/thing?id=${id}`
+  //         );
+  //         const data = userSelectedGame.data;
+  //         // Parsing data from XML to JS - customized code for reading attributes
+  //         const options = {
+  //           ignoreAttributes: false,
+  //           allowBooleanAttributes: true,
+  //         };
+  //         console.log(data);
+  //         const parser = new XMLParser(options);
+  //         let parsedData = parser.parse(data);
+  //         console.log(parsedData);
+  //         const userSelectedGameInfo = parsedData?.items?.item;
+  //         console.log(userSelectedGameInfo);
+  //         // decoding HTML entities for two scenarios - some games come from API with only one name, some with an array of names
+  //         if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
+  //           const name = userSelectedGameInfo.name[0];
+  //           const currentName = he.decode(name["@_value"]);
+  //           console.log(currentName);
+  //           userSelectedGameInfo.name["@_value"] = currentName;
+  //           console.log(userSelectedGameInfo.name["@_value"]);
+  //         }
 
-          // decoding HTML entities for two scenarios - some games come from API with only one name, some with an array of names
-          if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
-            const name = userSelectedGameInfo.name[0];
-            const currentName = he.decode(name["@_value"]);
-            console.log(currentName);
-            userSelectedGameInfo.name["@_value"] = currentName;
-            console.log(userSelectedGameInfo.name["@_value"]);
-          }
+  //         if (userSelectedGameInfo && userSelectedGameInfo.description) {
+  //           userSelectedGameInfo.description = he.decode(
+  //             userSelectedGameInfo.description
+  //           );
+  //         }
 
-          if (userSelectedGameInfo && userSelectedGameInfo.description) {
-            userSelectedGameInfo.description = he.decode(
-              userSelectedGameInfo.description
-            );
-          }
+  //         setSelectedGameInfo(userSelectedGameInfo);
 
-          setSelectedGameInfo(userSelectedGameInfo);
+  //         const updatedLocalStorage =
+  //           JSON.parse(localStorage.getItem("wishlist")) || [];
+  //         if (!updatedLocalStorage.includes(id)) {
+  //           updatedLocalStorage.push(id);
+  //         }
+  //         localStorage.setItem("wishlist", JSON.stringify(updatedLocalStorage));
 
-          const updatedLocalStorage =
-            JSON.parse(localStorage.getItem("wishlist")) || [];
-          if (!updatedLocalStorage.includes(id)) {
-            updatedLocalStorage.push(id);
-          }
-          localStorage.setItem("wishlist", JSON.stringify(updatedLocalStorage));
+  //         // If the game is being updated, set the selected game and open the modal
+  //         if (selectedGame && selectedGame["@_id"] === id) {
+  //           setSelectedGameInfo(userSelectedGameInfo);
+  //           setIsOpen(true);
+  //         }
+  //       } catch (err) {
+  //         toast.error("Failed to load selected games");
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     };
+  //     console.log(wishlist);
+  //     fetchAndHandleGame(id);
 
-          // If the game is being updated, set the selected game and open the modal
-          if (selectedGame && selectedGame["@_id"] === id) {
-            setSelectedGameInfo(userSelectedGameInfo);
-            setIsOpen(true);
-          }
-        } catch (err) {
-          toast.error("Failed to load selected games");
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      console.log(wishlist);
-      // Fetch and handle the game for the newly added ID
-      fetchAndHandleGame(id);
+  //     return updatedWishlist;
+  //   });
+  // };
 
-      return updatedWishlist;
-    });
-  };
+  // useEffect(() => {
+  //   setIsItemOnWishlist(ItemInWishlist(selectedGame && selectedGame["@_id"]));
+  // }, [wishlist, selectedGame]);
 
-  useEffect(() => {
-    setIsItemOnWishlist(ItemInWishlist(selectedGame && selectedGame["@_id"]));
-  }, [wishlist, selectedGame]);
-
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
+  // useEffect(() => {
+  //   localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  // }, [wishlist]);
 
   return (
     <Box
@@ -182,7 +177,7 @@ function TopGamesSection({
       </Flex>
       <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>
         <Swiper slidesPerView={slidesPerView} grabCursor={true}>
-          {parsedHotGames?.map((game) => (
+          {hotGames?.map((game) => (
             <SwiperSlide key={game["@_id"]}>
               <Skeleton
                 isLoaded={!isLoading}
@@ -191,7 +186,7 @@ function TopGamesSection({
                 borderRadius="5%"
               >
                 <GameSwiperImage
-                  handleCardClick={handleCardClick}
+                  // handleCardClick={handleCardClick}
                   id={game["@_id"]}
                   picture={`${game?.thumbnail["@_value"]}`}
                 />
@@ -200,7 +195,7 @@ function TopGamesSection({
           ))}
         </Swiper>
       </Flex>
-      {selectedGame && isOpen && (
+      {/* {selectedGame && isOpen && (
         <Box pb="10">
           <GameInfoCard
             selectedGame={selectedGame}
@@ -211,7 +206,7 @@ function TopGamesSection({
             setIsGameInfoPage={setIsGameInfoPage}
           />
         </Box>
-      )}
+      )} */}
     </Box>
   );
 }

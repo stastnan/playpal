@@ -4,6 +4,8 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "src/utils/store.js";
 
 export const customTheme = extendTheme({
   fonts: {
@@ -20,10 +22,12 @@ export const customTheme = extendTheme({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ChakraProvider theme={customTheme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider theme={customTheme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );

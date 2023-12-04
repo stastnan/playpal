@@ -5,6 +5,7 @@ import { XMLParser } from "fast-xml-parser";
 import he from "he";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import GameInfoCard from "src/components/GameInfoCard";
 import AlternativeBanner from "src/components/ui/AlternativeBanner";
 import { customTheme } from "src/main";
@@ -40,7 +41,7 @@ function GamePage({ setIsGameInfoPage, isGameInfoPage }) {
         setGameDetail(gameInfo);
         console.log(gameDetail);
       } catch (error) {
-        console.error("Error fetching game details:", error);
+        toast.error("Error fetching game details:", error);
       }
     };
 

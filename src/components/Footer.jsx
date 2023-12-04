@@ -27,13 +27,16 @@ function Footer() {
         <Text fontSize={{ base: "md", sm: "sm", md: "lg" }}>
           Which way will you continue?
         </Text>
-        <a href="mailto:nik.stastna@gmail.com">
+        <a href="mailto:my.coding.journey.cz@gmail.com">
           <Button size={{ base: "xs", md: "sm" }} leftIcon={<SiGmail />}>
             Gmail
           </Button>
         </a>
 
-        <a href="https://instagram.com/playpal" target="blank">
+        <a
+          href="https://www.instagram.com/my.coding.journey.cz/"
+          target="blank"
+        >
           <Button size={{ base: "xs", md: "sm" }} leftIcon={<FaInstagram />}>
             Instagram
           </Button>
