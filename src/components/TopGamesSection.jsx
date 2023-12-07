@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Skeleton,
+  Spinner,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -13,32 +14,28 @@ import {
 import "swiper/css";
 import "swiper/css/pagination";
 
-import GameSwiperImage from "./GameSwiperImage";
+import GameSwiperImage from "src/components/GameSwiperImage";
 import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
 import SearchButton from "./SearchButton";
 
-import {
-  useGetGameByIdQuery,
-  useGetHotGamesQuery,
-} from "src/utils/hotGamesApi";
+import { useGetGameByIdQuery, useGetHotGamesQuery } from "src/utils/gamesApi";
 
 function TopGamesSection() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data, isError, error, isLoading, isSuccess } = useGetHotGamesQuery();
 
-  const { hotGames, isError, error, isLoading, isSuccess } =
-    useGetHotGamesQuery();
+  console.log(data);
+  console.log(error);
+  // console.log(hotGames.data);
+
   //   const { gameData, gameIsError, gameError, gameIsLoading, gameIsSuccess } =
   //     useGetGameByIdQuery(id);
 
-  // const id = () => {
-
-  // }
-
-  // const handleCardClick = (id) => {
-  //   const selectedGame = hotGames.find((game) => game["@_id"] === id);
-  //   setIsOpen(true);
-  // };
+  const handleCardClick = (id) => {
+    const selectedGame = data.find((game) => game.attributes.id === id);
+    setIsOpen(true);
+  };
 
   const slidesPerView = useBreakpointValue(
     {
@@ -69,6 +66,48 @@ function TopGamesSection() {
     }
   );
 
+  const content = () => {
+    if (isLoading) {
+      return <Spinner color="red.500" />;
+    }
+    if (isSuccess) {
+      return (
+        <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>
+          <Swiper slidesPerView={slidesPerView} grabCursor={true}>
+            {data?.map((game) => (
+              <SwiperSlide key={game.attributes.id}>
+                <GameSwiperImage
+                  handleCardClick={handleCardClick}
+                  id={game.attributes.id}
+                  picture={game.children[0].attributes.value}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Flex>
+      );
+      /* {selectedGame && isOpen && (
+        <Box pb="10">
+          <GameInfoCard
+            selectedGame={selectedGame}
+            setIsOpen={setIsOpen}
+            onWishlistAdd={onWishlistAdd}
+            isItemOnWishlist={isItemOnWishlist}
+            isGameInfoPage={isGameInfoPage}
+            setIsGameInfoPage={setIsGameInfoPage}
+          />
+        </Box>
+      )} */
+    }
+
+    // if (isError) {
+    //   <Box>{error.error ?? "Somwthing went wrong"}</Box>;
+    // }
+
+    if (isError) {
+      return <Box>{error?.error}</Box>;
+    }
+  };
   // const onWishlistAdd = async (id) => {
   //   setWishlist((prevWishlist) => {
   //     const newItemInWishlist = ItemInWishlist(id);
@@ -175,38 +214,7 @@ function TopGamesSection() {
           about in the hallowed halls of the tabletop community
         </Text>
       </Flex>
-      <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>
-        <Swiper slidesPerView={slidesPerView} grabCursor={true}>
-          {hotGames?.map((game) => (
-            <SwiperSlide key={game["@_id"]}>
-              <Skeleton
-                isLoaded={!isLoading}
-                w={swiperSkeletonSize}
-                h={swiperSkeletonSize}
-                borderRadius="5%"
-              >
-                <GameSwiperImage
-                  // handleCardClick={handleCardClick}
-                  id={game["@_id"]}
-                  picture={`${game?.thumbnail["@_value"]}`}
-                />
-              </Skeleton>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Flex>
-      {/* {selectedGame && isOpen && (
-        <Box pb="10">
-          <GameInfoCard
-            selectedGame={selectedGame}
-            setIsOpen={setIsOpen}
-            onWishlistAdd={onWishlistAdd}
-            isItemOnWishlist={isItemOnWishlist}
-            isGameInfoPage={isGameInfoPage}
-            setIsGameInfoPage={setIsGameInfoPage}
-          />
-        </Box>
-      )} */}
+      {content()}
     </Box>
   );
 }

@@ -5,24 +5,23 @@ import {
   transferXmlToJsWithDetails,
 } from "./transferFromXmlToJs";
 
+import XMLParser from "react-xml-parser";
+
 export const gamesApi = createApi({
   reducerPath: "games",
   baseQuery: fetchBaseQuery({ baseUrl: BOARDGAMEGEEK_API_URL }),
   endpoints: (builder) => ({
     getHotGames: builder.query({
-      query: () => "/xmlapi2/hot?boardgame",
-      responseHandler: async (response) => {
-        if (response.headers.get("content-type")?.includes("xml")) {
-          return {
-            data: transferXmlToJsSimple(response),
-            meta: { request: response.request, response },
-          };
-        } else {
-          return response;
-        }
-      },
+      query: () => ({
+        url: "/xmlapi2/hot?boardgame",
+        responseHandler: async (response) => {
+          const text = await response.text();
+          const xml = new XMLParser().parseFromString(text);
+          const data = xml.children;
+          return data;
+        },
+      }),
     }),
-
     getGameById: builder.query({
       query: (id) => `/xmlapi2/thing?id=${id}`,
     }),
