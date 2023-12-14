@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import he from "he";
+import PropTypes from "prop-types";
 import { useBreakpointValue } from "@chakra-ui/react";
 import { useGetGameByIdQuery } from "src/utils/gamesApi";
 
@@ -45,7 +46,7 @@ function GameInfoCard({ gameId }) {
   const content = () => {
     if (isSuccess) {
       return (
-        <Card direction={{ sm: "column", xl: "row" }} variant="outline" mt="20">
+        <Card direction={{ sm: "column", xl: "row" }} variant="outline">
           {data && (
             <Stack align="start">
               <CardBody>
@@ -59,7 +60,7 @@ function GameInfoCard({ gameId }) {
                   }}
                 >
                   {!isBigScreen && (
-                    <Flex justify="space-between" align="center" w="100%" p="5">
+                    <Flex justify="center" align="center" w="100%" p="5">
                       <Skeleton isLoaded={!isLoading}>
                         <Heading size={{ base: "sm", sm: "md" }}>
                           {he.decode(data[0].children[2].attributes.value)}
@@ -155,5 +156,9 @@ function GameInfoCard({ gameId }) {
 
   return <>{content()}</>;
 }
+
+GameInfoCard.propTypes = {
+  gameId: PropTypes.string,
+};
 
 export default GameInfoCard;

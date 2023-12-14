@@ -33,8 +33,9 @@ const findDescription = (gameAttributes) => {
         .replace(/&#10;/g, "\n")
         .replace(/&mdash;/g, " - ")
         .replace(/&rsquo;/g, "'")
-        .replace("- description from the publisher", "");
-      break; // Stop searching once the description is found
+        .replace("- description from the publisher", "")
+        .replace(/&quot;/g, `"`);
+      break;
     }
   }
 
