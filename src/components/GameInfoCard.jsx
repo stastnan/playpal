@@ -14,8 +14,9 @@ import {
 } from "@chakra-ui/react";
 import he from "he";
 import { useBreakpointValue } from "@chakra-ui/react";
-import useFindPlayingTimeValue from "src/hooks/useFindPlayingTimeValue";
 import { useGetGameByIdQuery } from "src/utils/gamesApi";
+
+import useFindPlayingTimeValue from "src/hooks/useFindPlayingTimeValue";
 import useFindYearOfPublishing from "src/hooks/useFindYearOfPublishing";
 import useFindMinAndMaxPlayers from "src/hooks/useFindMinAndMaxPlayers";
 import useFindMinAndMaxAge from "src/hooks/useFindMinAge";
@@ -24,16 +25,14 @@ import useFindDescription from "src/hooks/useFindDescription";
 function GameInfoCard({ gameId }) {
   const { data, isError, error, isLoading, isSuccess } =
     useGetGameByIdQuery(gameId);
-  console.log(data);
+
   const { minPlaytime, maxPlaytime } = useFindPlayingTimeValue(data);
   const yearOfPublishing = useFindYearOfPublishing(data);
   const { minPlayers, maxPlayers } = useFindMinAndMaxPlayers(data);
   const minAge = useFindMinAndMaxAge(data);
   const description = useFindDescription(data);
-  console.log(description);
 
   let isBigScreen = false;
-
   isBigScreen = useBreakpointValue({
     base: false,
     sm: false,
@@ -64,7 +63,7 @@ function GameInfoCard({ gameId }) {
                       <Skeleton isLoaded={!isLoading}>
                         <Heading size={{ base: "sm", sm: "md" }}>
                           {he.decode(data[0].children[2].attributes.value)}
-                          <Badge>{yearOfPublishing}</Badge>
+                          <Badge ml="2">{yearOfPublishing}</Badge>
                         </Heading>
                       </Skeleton>
                     </Flex>
@@ -85,12 +84,12 @@ function GameInfoCard({ gameId }) {
                       }}
                     />
                   </Skeleton>
-                  <Flex direction="column" gap="5" p="0">
+                  <Flex direction="column" p="0">
                     {isBigScreen && (
                       <Skeleton isLoaded={!isLoading} borderRadius="5">
                         <Heading size="md" px="1">
                           {he.decode(data[0].children[2].attributes.value)}
-                          <Badge>{yearOfPublishing}</Badge>
+                          <Badge ml="2">{yearOfPublishing}</Badge>
                         </Heading>
                       </Skeleton>
                     )}
@@ -99,6 +98,7 @@ function GameInfoCard({ gameId }) {
                         textAlign="justify"
                         p={{ base: "0", lg: "1" }}
                         fontSize={{ base: "sm", sm: "md" }}
+                        my="3"
                       >
                         {description}
                       </Text>
@@ -128,35 +128,8 @@ function GameInfoCard({ gameId }) {
         ${minPlayers} - ${maxPlayers}`}
                         </Badge>
                         <Badge>{`Min. Age: ${minAge}`}</Badge>
-                        {!isBigScreen && (
-                          <Flex mt="10" justify="center">
-                            {/* tooltip and iconbutton potentially here */}
-                          </Flex>
-                        )}
                       </Stack>
                     </Skeleton>
-                    {/* {isBigScreen && (
-  <Tooltip
-    hasArrow
-    label={
-      isItemOnWishlist
-        ? "This game is already on your wishlist!"
-        : "Add game to wishlist (See it in the Player section)"
-    }
-    bg={customTheme.colors.darkBrown}
-  >
-    <IconButton
-      color={customTheme.colors.lightBrown}
-      isRound
-      icon={isItemOnWishlist ? <CheckIcon /> : <AddIcon />}
-      size="sm"
-      right="5"
-      bottom="5"
-      position="absolute"
-      onClick={() => onWishlistAdd(currentGame["@_id"])}
-    />
-  </Tooltip>
-)} */}
                   </Flex>
                 </Flex>
               </CardBody>
