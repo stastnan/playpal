@@ -1,0 +1,35 @@
+const findYearOfPublishing = (gameAttributes) => {
+  let year = null;
+
+  for (const attribute of gameAttributes) {
+    if (
+      attribute.name === "yearpublished" &&
+      attribute.attributes &&
+      attribute.attributes.value
+    ) {
+      year = attribute.attributes.value;
+      break;
+    }
+
+    if (attribute.children && attribute.children.length > 0) {
+      const yearFromChild = findYearOfPublishing(attribute.children);
+
+      if (yearFromChild) {
+        year = yearFromChild;
+        break;
+      }
+    }
+  }
+
+  return year;
+};
+
+const useFindYearOfPublishing = (gameData) => {
+  if (!gameData || !gameData[0] || !gameData[0].children) {
+    return null;
+  }
+
+  return findYearOfPublishing(gameData[0].children);
+};
+
+export default useFindYearOfPublishing;

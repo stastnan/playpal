@@ -20,8 +20,10 @@ import { customTheme } from "src/main";
 import SearchButton from "./SearchButton";
 
 import { useGetGameByIdQuery, useGetHotGamesQuery } from "src/utils/gamesApi";
+import { Link } from "react-router-dom";
+import GamePage from "src/pages/GamePage";
 
-function TopGamesSection() {
+function TopGamesSection({ picture }) {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isError, error, isLoading, isSuccess } = useGetHotGamesQuery();
 
@@ -76,11 +78,13 @@ function TopGamesSection() {
           <Swiper slidesPerView={slidesPerView} grabCursor={true}>
             {data?.map((game) => (
               <SwiperSlide key={game.attributes.id}>
-                <GameSwiperImage
-                  handleCardClick={handleCardClick}
-                  id={game.attributes.id}
-                  picture={game.children[0].attributes.value}
-                />
+                <Link to={`/games/${game.attributes.id}`}>
+                  <GameSwiperImage
+                    handleCardClick={handleCardClick}
+                    id={game.attributes.id}
+                    picture={game.children[0].attributes.value}
+                  />
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

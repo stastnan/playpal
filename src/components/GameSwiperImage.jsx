@@ -2,7 +2,7 @@ import { Image } from "@chakra-ui/image";
 import { Box } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
 
-function GameSwiperImage({ picture, id, handleCardClick }) {
+function GameSwiperImage({ picture }) {
   const imageSize = useBreakpointValue(
     {
       base: 70,
@@ -16,7 +16,6 @@ function GameSwiperImage({ picture, id, handleCardClick }) {
       fallback: "lg",
     }
   );
-  console.log(picture);
 
   return (
     <Box w={imageSize} h={imageSize}>
@@ -28,7 +27,6 @@ function GameSwiperImage({ picture, id, handleCardClick }) {
         borderRadius="5%"
         cursor="pointer"
         overflow="hidden"
-        onClick={() => handleCardClick(id)}
       />
     </Box>
   );

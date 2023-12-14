@@ -11,26 +11,10 @@ function AppRouter({ setIsGameInfoPage, isGameInfoPage }) {
     <ErrorBoundary fallback={<Error isErrorPage />}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={
-              <Homepage
-                isGameInfoPage={isGameInfoPage}
-                setIsGameInfoPage={setIsGameInfoPage}
-              />
-            }
-          />
+          <Route index element={<Homepage />} />
           <Route path="*" element={<Error />} />
           <Route path="/search" element={<Search />} />
-          <Route
-            path="/games/:gameId"
-            element={
-              <GamePage
-                setIsGameInfoPage={setIsGameInfoPage}
-                isGameInfoPage={isGameInfoPage}
-              />
-            }
-          />
+          <Route path="/games/:gameId" element={<GamePage />} />
         </Route>
       </Routes>
     </ErrorBoundary>

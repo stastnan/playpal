@@ -23,12 +23,20 @@ export const gamesApi = createApi({
       }),
     }),
     getGameById: builder.query({
-      query: (id) => `/xmlapi2/thing?id=${id}`,
-    }),
+      query: (id) => ({
+        url: `/xmlapi2/thing?id=${id}`,
+        responseHandler: async (response) => {
+          const text = await response.text();
+          const xml = new XMLParser().parseFromString(text);
+          const data = xml.children;
+          return data;
+        },
+      }),
 
-    getUserGames: builder.query({
-      query: (user) =>
-        `/xmlapi2/collection?username=${user}&subtype=boardgame&own=1`,
+      getUserGames: builder.query({
+        query: (user) =>
+          `/xmlapi2/collection?username=${user}&subtype=boardgame&own=1`,
+      }),
     }),
   }),
 });
