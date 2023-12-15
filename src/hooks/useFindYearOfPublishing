@@ -8,16 +8,6 @@ const findYearOfPublishing = (gameAttributes) => {
       attribute.attributes.value
     ) {
       year = attribute.attributes.value;
-      break;
-    }
-
-    if (attribute.children && attribute.children.length > 0) {
-      const yearFromChild = findYearOfPublishing(attribute.children);
-
-      if (yearFromChild) {
-        year = yearFromChild;
-        break;
-      }
     }
   }
 

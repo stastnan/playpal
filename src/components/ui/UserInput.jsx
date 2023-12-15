@@ -1,14 +1,13 @@
 import { Input } from "@chakra-ui/react";
-
-function UserInput({
-  placeholder,
-  setUser,
-  user,
-  setIsWishlistVisible,
-  IsWishlistVisible,
-}) {
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import { setUsername } from "src/utils/userSlice";
+function UserInput({ placeholder }) {
   // let userName = null;
-
+  const dispatch = useDispatch();
+  const handleInputChange = (event) => {
+    dispatch(setUsername(event.target.value));
+  };
   return (
     <Input
       variant="outline"
@@ -16,12 +15,13 @@ function UserInput({
       size="md"
       bg="white"
       px="5"
-      value={user}
-      onChange={(e) => {
-        setUser(e.target.value);
-      }}
+      onChange={handleInputChange}
     />
   );
 }
+
+UserInput.propTypes = {
+  placeholder: PropTypes.string,
+};
 
 export default UserInput;

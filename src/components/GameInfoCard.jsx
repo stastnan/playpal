@@ -3,12 +3,10 @@ import {
   Box,
   Card,
   CardBody,
-  Center,
   Flex,
   Heading,
   Image,
   Skeleton,
-  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -20,7 +18,7 @@ import { useGetGameByIdQuery } from "src/utils/gamesApi";
 import useFindPlayingTimeValue from "src/hooks/useFindPlayingTimeValue";
 import useFindYearOfPublishing from "src/hooks/useFindYearOfPublishing";
 import useFindMinAndMaxPlayers from "src/hooks/useFindMinAndMaxPlayers";
-import useFindMinAndMaxAge from "src/hooks/useFindMinAge";
+import useFindMinAge from "src/hooks/useFindMinAge";
 import useFindDescription from "src/hooks/useFindDescription";
 
 function GameInfoCard({ gameId }) {
@@ -30,7 +28,7 @@ function GameInfoCard({ gameId }) {
   const { minPlaytime, maxPlaytime } = useFindPlayingTimeValue(data);
   const yearOfPublishing = useFindYearOfPublishing(data);
   const { minPlayers, maxPlayers } = useFindMinAndMaxPlayers(data);
-  const minAge = useFindMinAndMaxAge(data);
+  const minAge = useFindMinAge(data);
   const description = useFindDescription(data);
 
   let isBigScreen = false;
@@ -46,7 +44,7 @@ function GameInfoCard({ gameId }) {
   const content = () => {
     if (isSuccess) {
       return (
-        <Card direction={{ sm: "column", xl: "row" }} variant="outline">
+        <Card direction={{ sm: "column", xl: "row" }} variant="outline" mb="10">
           {data && (
             <Stack align="start">
               <CardBody>
@@ -117,8 +115,8 @@ function GameInfoCard({ gameId }) {
                         <Badge>
                           Playing Time:
                           {minPlaytime === maxPlaytime
-                            ? ` ${minPlaytime}`
-                            : ` ${minPlaytime} - ${maxPlaytime}`}
+                            ? ` ${minPlaytime} min`
+                            : ` ${minPlaytime} - ${maxPlaytime} min`}
                         </Badge>
 
                         <Badge>
@@ -142,16 +140,7 @@ function GameInfoCard({ gameId }) {
     if (isError) {
       return <Box>{error.error}</Box>;
     }
-
-    if (isLoading) {
-      return (
-        <Card direction={{ sm: "column", xl: "row" }} variant="outline" mt="20">
-          <Center>
-            <Spinner size="xl" />
-          </Center>
-        </Card>
-      );
-    }
+    // I don't have here code for isLoading variant - if it's loading, there are skeletons in isSuccess statement
   };
 
   return <>{content()}</>;

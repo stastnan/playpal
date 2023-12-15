@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 import {
   Box,
+  Center,
   Flex,
   Heading,
-  Skeleton,
   Spinner,
   Text,
   useBreakpointValue,
@@ -15,29 +15,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import GameSwiperImage from "src/components/GameSwiperImage";
-import GameInfoCard from "./GameInfoCard";
 import { customTheme } from "src/main";
 import SearchButton from "./SearchButton";
+import { useGetHotGamesQuery } from "src/utils/gamesApi";
 
-import { useGetGameByIdQuery, useGetHotGamesQuery } from "src/utils/gamesApi";
-import { Link } from "react-router-dom";
-import GamePage from "src/pages/GamePage";
-
-function TopGamesSection({ picture }) {
-  const [isOpen, setIsOpen] = useState(false);
+function TopGamesSection() {
   const { data, isError, error, isLoading, isSuccess } = useGetHotGamesQuery();
-
-  console.log(data);
-  console.log(error);
-  // console.log(hotGames.data);
-
-  //   const { gameData, gameIsError, gameError, gameIsLoading, gameIsSuccess } =
-  //     useGetGameByIdQuery(id);
-
-  const handleCardClick = (id) => {
-    const selectedGame = data.find((game) => game.attributes.id === id);
-    setIsOpen(true);
-  };
 
   const slidesPerView = useBreakpointValue(
     {
@@ -54,34 +37,22 @@ function TopGamesSection({ picture }) {
     }
   );
 
-  const swiperSkeletonSize = useBreakpointValue(
-    {
-      base: 70,
-      sm: 90,
-      md: 100,
-      lg: 110,
-      xl: 120,
-      "2xl": 120,
-    },
-    {
-      fallback: "lg",
-    }
-  );
-
   const content = () => {
     if (isLoading) {
-      return <Spinner color="red.500" />;
+      return (
+        <Center>
+          <Spinner color={customTheme.colors.darkBrown} />
+        </Center>
+      );
     }
     if (isSuccess) {
       return (
-        <Flex align="center" justify="center" my={5} pl={{ base: 3, md: 10 }}>
+        <Flex align="center" justify="center" my="5" pl={{ base: 3, md: 10 }}>
           <Swiper slidesPerView={slidesPerView} grabCursor={true}>
             {data?.map((game) => (
               <SwiperSlide key={game.attributes.id}>
                 <Link to={`/games/${game.attributes.id}`}>
                   <GameSwiperImage
-                    handleCardClick={handleCardClick}
-                    id={game.attributes.id}
                     picture={game.children[0].attributes.value}
                   />
                 </Link>
@@ -90,26 +61,10 @@ function TopGamesSection({ picture }) {
           </Swiper>
         </Flex>
       );
-      /* {selectedGame && isOpen && (
-        <Box pb="10">
-          <GameInfoCard
-            selectedGame={selectedGame}
-            setIsOpen={setIsOpen}
-            onWishlistAdd={onWishlistAdd}
-            isItemOnWishlist={isItemOnWishlist}
-            isGameInfoPage={isGameInfoPage}
-            setIsGameInfoPage={setIsGameInfoPage}
-          />
-        </Box>
-      )} */
     }
 
-    // if (isError) {
-    //   <Box>{error.error ?? "Somwthing went wrong"}</Box>;
-    // }
-
     if (isError) {
-      return <Box>{error?.error}</Box>;
+      return <Center>{error?.error ?? "Something went wrong"}</Center>;
     }
   };
   // const onWishlistAdd = async (id) => {

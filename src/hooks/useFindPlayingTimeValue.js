@@ -12,15 +12,6 @@ const findPlaytimeValue = (gameAttributes) => {
     ) {
       maxPlaytime = att.attributes.value;
     }
-
-    if (att.children && att.children.length > 0) {
-      const timeData = findPlaytimeValue(att.children);
-
-      if (timeData) {
-        minPlaytime = minPlaytime || timeData.minPlaytime;
-        maxPlaytime = maxPlaytime || timeData.maxPlaytime;
-      }
-    }
   }
 
   return {

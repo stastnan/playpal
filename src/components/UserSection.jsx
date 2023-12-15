@@ -8,57 +8,30 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-
 import { UnlockIcon } from "@chakra-ui/icons";
 import { customTheme } from "src/main";
 import UserInput from "src/components/ui/UserInput";
-import { useEffect, useState } from "react";
-import { XMLParser } from "fast-xml-parser";
-import axios from "axios";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectUsername } from "src/utils/userSlice";
+import { selectIsClicked, setClicked } from "src/utils/buttonSlice";
 import ApprovedUserSection from "./ApprovedUserSection";
 
-function UserSection({
-  wishlist,
-  setWishlist,
-  isGameInfoPage,
-  setIsGameInfoPage,
-}) {
-  const [user, setUser] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [userGames, setUserGames] = useState();
-  const [isWishlistVisible, setIsWishlistVisible] = useState(false);
-  console.log(wishlist);
-  const fetchUserGames = async () => {
-    try {
-      setIsLoading(true);
-      const userGames = await axios.get(
-        `https://boardgamegeek.com/xmlapi2/collection?username=${user}&subtype=boardgame&own=1`
-      );
-      const data = userGames.data;
+function UserSection() {
+  const dispatch = useDispatch();
+  const isButtonClicked = useSelector(selectIsClicked);
 
-      // Parsing data from XML to JS - customized code for reading attributes
-      const options = {
-        ignoreAttributes: false,
-      };
+  const username = useSelector(selectUsername);
 
-      const parser = new XMLParser(options);
-      let parsedData = parser.parse(data);
-      const userGamesArray = parsedData?.items?.item;
-
-      setUserGames(userGamesArray);
-      setIsWishlistVisible(true);
-    } catch (err) {
-      toast.error("Player's games weren't loaded! Is the user name correct?");
-    } finally {
-      setIsLoading(false);
+  const handleButtonClick = () => {
+    console.log("Button clicked");
+    if (username.trim() !== "") {
+      console.log("Setting isButtonClicked to true");
+      dispatch(setClicked(true));
+    } else {
+      toast.error("Please enter your BGG username.");
     }
   };
-
-  useEffect(() => {
-    if (user && user.trim() !== "") {
-      fetchUserGames(user);
-    }
-  }, []);
 
   return (
     <>
@@ -83,35 +56,18 @@ function UserSection({
             your BoardGameGeek username:
           </Text>
           <HStack py="10" spacing="3">
-            <UserInput
-              placeholder="Your BGG username"
-              user={user}
-              setUser={setUser}
-              isWishlistVisible={isWishlistVisible}
-              setIsWishlistVisible={setIsWishlistVisible}
-            />
+            <UserInput placeholder="Your BGG username" />
             <IconButton
               variant="solid"
               colorScheme="gray"
               icon={<UnlockIcon />}
-              onClick={() => fetchUserGames(user)}
               isRound
+              onClick={handleButtonClick}
             />
           </HStack>
         </Flex>
       </Box>
-      {user && (
-        <ApprovedUserSection
-          userGames={userGames}
-          user={user}
-          wishlist={wishlist}
-          setWishlist={setWishlist}
-          isWishlistVisible={isWishlistVisible}
-          setIsWishlistVisible={setIsWishlistVisible}
-          isGameInfoPage={isGameInfoPage}
-          setIsGameInfoPage={setIsGameInfoPage}
-        />
-      )}
+      {isButtonClicked && <ApprovedUserSection />}
     </>
   );
 }

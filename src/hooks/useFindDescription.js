@@ -10,16 +10,6 @@ const findDescription = (gameAttributes) => {
       att.attributes.value !== undefined
     ) {
       description = att.attributes.value;
-      break;
-    }
-
-    if (att.children && att.children.length > 0) {
-      const descriptionFromChild = findDescription(att.children);
-
-      if (descriptionFromChild) {
-        description = descriptionFromChild;
-        break;
-      }
     }
 
     if (
@@ -35,7 +25,6 @@ const findDescription = (gameAttributes) => {
         .replace(/&rsquo;/g, "'")
         .replace("- description from the publisher", "")
         .replace(/&quot;/g, `"`);
-      break;
     }
   }
 

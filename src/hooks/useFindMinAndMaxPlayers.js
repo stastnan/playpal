@@ -12,15 +12,6 @@ const findMinAndMaxPlayers = (gameAttributes) => {
     ) {
       maxPlayers = att.attributes.value;
     }
-
-    if (att.children && att.children.length > 0) {
-      const playerRangeFromChild = findMinAndMaxPlayers(att.children);
-
-      if (playerRangeFromChild) {
-        minPlayers = minPlayers || playerRangeFromChild.minPlayers;
-        maxPlayers = maxPlayers || playerRangeFromChild.maxPlayers;
-      }
-    }
   }
 
   return {
