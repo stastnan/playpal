@@ -18,7 +18,7 @@ import {
 
 import { customTheme } from "src/main";
 import UsersGameModal from "src/components/UsersGameModal";
-// import WishlistAccordion from "./WishlistAccordion";
+import WishlistAccordion from "./WishlistAccordion";
 import { useGetUserGamesQuery } from "src/utils/gamesApi";
 import { selectUsername } from "src/utils/userSlice";
 import { selectGameId, setGameId } from "src/utils/selectedGameSlice";
@@ -27,6 +27,7 @@ function ApprovedUserSection() {
   const dispatch = useDispatch();
   const username = useSelector(selectUsername);
   const selectedGameId = useSelector(selectGameId);
+
   const { data, isError, error, isSuccess } = useGetUserGamesQuery(username);
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -35,34 +36,20 @@ function ApprovedUserSection() {
     onOpen();
   };
 
+  const wishlist = useSelector((state) => state.wishlist);
+
   return (
     <>
-      {/* {wishlist && isWishlistVisible && (
+      {wishlist && (
         <Box
           bg={customTheme.colors.darkBrown}
           px={{ base: "4", sm: "8", md: "10" }}
           w="100%"
           pb="4"
         >
-          {wishlist?.length > 0 && (
-            <WishlistAccordion
-              wishlist={wishlist}
-              parsedHotGames={parsedHotGames}
-              isItemOnWishlist={isItemOnWishlist}
-              setIsItemOnWishlist={setIsItemOnWishlist}
-              setWishlist={setWishlist}
-              selectedGameInfo={selectedGameInfo}
-              setSelectedGameInfo={setSelectedGameInfo}
-              setSelectedGame={setSelectedGame}
-              selectedGame={selectedGame}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              isGameInfoPage={isGameInfoPage}
-              setIsGameInfoPage={setIsGameInfoPage}
-            />
-          )}
+          {wishlist?.length > 0 && <WishlistAccordion />}
         </Box>
-      )} */}
+      )}
 
       <Flex
         direction="column"

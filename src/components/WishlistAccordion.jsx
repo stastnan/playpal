@@ -10,22 +10,7 @@ import {
 import Wishlist from "./Wishlist";
 import { customTheme } from "src/main";
 
-function WishlistAccordion({
-  wishlist,
-  parsedHotGames,
-  isItemOnWishlist,
-  setIsItemOnWishlist,
-  setWishlist,
-  setSelectedGame,
-  setSelectedGameInfo,
-  selectedGame,
-  selectedGameInfo,
-  isLoading,
-  setIsLoading,
-  onWishlistAdd,
-  setIsGameInfoPage,
-}) {
-  console.log(selectedGame);
+function WishlistAccordion() {
   return (
     <Accordion allowMultiple pt="5">
       <AccordionItem>
@@ -53,21 +38,7 @@ function WishlistAccordion({
             w={{ base: "90%", md: "50%" }}
             mx="auto"
           >
-            <Wishlist
-              wishlist={wishlist}
-              parsedHotGames={parsedHotGames}
-              isItemOnWishlist={isItemOnWishlist}
-              setIsItemOnWishlist={setIsItemOnWishlist}
-              setWishlist={setWishlist}
-              setSelectedGame={setSelectedGame}
-              onWishlistAdd={onWishlistAdd}
-              setSelectedGameInfo={setSelectedGameInfo}
-              selectedGame={selectedGame}
-              selectedGameInfo={selectedGameInfo}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              setIsGameInfoPage={setIsGameInfoPage}
-            />
+            <Wishlist />
           </Box>
         </AccordionPanel>
       </AccordionItem>

@@ -3,6 +3,7 @@ import { gamesApi } from "src/utils/gamesApi";
 import userReducer from "src/utils/userSlice";
 import buttonReducer from "src/utils/buttonSlice";
 import selectedGameReducer from "src/utils/selectedGameSlice";
+import wishlistReducer from "src/utils/wishlistSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     user: userReducer,
     button: buttonReducer,
     selectedGame: selectedGameReducer,
+    wishlist: wishlistReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -5,25 +5,48 @@ import {
   CardBody,
   Flex,
   Heading,
+  IconButton,
   Image,
   Skeleton,
   Stack,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import he from "he";
 import PropTypes from "prop-types";
 import { useBreakpointValue } from "@chakra-ui/react";
+import { addToWishlist, deleteFromWishlist } from "src/utils/wishlistSlice";
 import { useGetGameByIdQuery } from "src/utils/gamesApi";
+import { useDispatch, useSelector } from "react-redux";
 
 import useFindPlayingTimeValue from "src/hooks/useFindPlayingTimeValue";
 import useFindYearOfPublishing from "src/hooks/useFindYearOfPublishing";
 import useFindMinAndMaxPlayers from "src/hooks/useFindMinAndMaxPlayers";
 import useFindMinAge from "src/hooks/useFindMinAge";
 import useFindDescription from "src/hooks/useFindDescription";
+import { customTheme } from "src/main";
+import { AddIcon, CheckIcon } from "@chakra-ui/icons";
 
 function GameInfoCard({ gameId }) {
   const { data, isError, error, isLoading, isSuccess } =
     useGetGameByIdQuery(gameId);
+
+  const dispatch = useDispatch();
+
+  const wishlist = useSelector((state) => state.wishlist);
+
+  const isItemOnWishlist = (gameId) => {
+    const result = wishlist.some((item) => item.id === gameId);
+    return result;
+  };
+
+  const handleWishlist = (gameId) => {
+    if (!isItemOnWishlist(gameId)) {
+      dispatch(addToWishlist({ id: gameId }));
+    } else {
+      dispatch(deleteFromWishlist(gameId));
+    }
+  };
 
   const { minPlaytime, maxPlaytime } = useFindPlayingTimeValue(data);
   const yearOfPublishing = useFindYearOfPublishing(data);
@@ -127,8 +150,63 @@ function GameInfoCard({ gameId }) {
         ${minPlayers} - ${maxPlayers}`}
                         </Badge>
                         <Badge>{`Min. Age: ${minAge}`}</Badge>
+                        {!isBigScreen && (
+                          <Flex mt="10" justify="center">
+                            <Tooltip
+                              color="white"
+                              hasArrow
+                              label={
+                                isItemOnWishlist(gameId)
+                                  ? "This game is already on your wishlist!"
+                                  : "Add game to wishlist (See it in the Player section)"
+                              }
+                              bg={customTheme.colors.darkBrown}
+                            >
+                              <IconButton
+                                isRound
+                                icon={
+                                  isItemOnWishlist(gameId) ? (
+                                    <CheckIcon />
+                                  ) : (
+                                    <AddIcon />
+                                  )
+                                }
+                                onClick={() => handleWishlist(gameId)}
+                              />
+                            </Tooltip>
+                          </Flex>
+                        )}
                       </Stack>
                     </Skeleton>
+                    {isBigScreen && wishlist && (
+                      <Tooltip
+                        hasArrow
+                        label={
+                          isItemOnWishlist(gameId)
+                            ? "This game is already on your wishlist!"
+                            : "Add game to wishlist (See it in the Player section)"
+                        }
+                        bg={customTheme.colors.darkBrown}
+                        placement="left"
+                        color="white"
+                      >
+                        <IconButton
+                          isRound
+                          icon={
+                            isItemOnWishlist(gameId) ? (
+                              <CheckIcon />
+                            ) : (
+                              <AddIcon />
+                            )
+                          }
+                          size="sm"
+                          right="5"
+                          bottom="5"
+                          position="absolute"
+                          onClick={() => handleWishlist(gameId)}
+                        />
+                      </Tooltip>
+                    )}
                   </Flex>
                 </Flex>
               </CardBody>
