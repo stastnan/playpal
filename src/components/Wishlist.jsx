@@ -16,78 +16,79 @@ import he from "he";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteFromWishlist } from "src/utils/wishlistSlice";
+import { useGetGameByIdQuery } from "src/utils/gamesApi";
 
-function Wishlist({
-  wishlist,
-  setWishlist,
-  setSelectedGameInfo,
-  selectedGameInfo,
-  setIsLoading,
-  selectedGame,
-  isGameInfoPage,
-  onWishlistAdd,
-  setIsGameInfoPage,
-}) {
-  console.log(isGameInfoPage);
-  const [wishlistDetails, setWishlistDetails] = useState([]);
+function Wishlist() {
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist);
 
-  const removeFromWishlist = (itemId) => {
-    setWishlist((prevWishlist) => prevWishlist.filter((id) => id !== itemId));
+  console.log("WL: ", wishlist);
+  const handleDeleteFromWishlist = (gameId) => {
+    console.log(gameId);
+    dispatch(deleteFromWishlist(gameId));
   };
 
-  const { gameId } = useParams();
+  // const [wishlistDetails, setWishlistDetails] = useState([]);
 
-  useEffect(() => {
-    const fetchWishlistDetails = async () => {
-      setIsLoading(true);
-      const detailsPromises = wishlist.map((itemId) =>
-        fetchSelectedGame(itemId)
-      );
+  // const removeFromWishlist = (itemId) => {
+  //   setWishlist((prevWishlist) => prevWishlist.filter((id) => id !== itemId));
+  // };
 
-      try {
-        const wishlistDetailsData = await Promise.all(detailsPromises);
-        setWishlistDetails(wishlistDetailsData);
-      } catch (error) {
-        toast.error("Error fetching wishlist details:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // const { gameId } = useParams();
 
-    fetchWishlistDetails();
-  }, [wishlist]);
+  // useEffect(() => {
+  //   const fetchWishlistDetails = async () => {
+  //     setIsLoading(true);
+  //     const detailsPromises = wishlist.map((itemId) =>
+  //       fetchSelectedGame(itemId)
+  //     );
 
-  const fetchSelectedGame = async (itemId) => {
-    try {
-      const userSelectedGame = await axios.get(
-        `https://boardgamegeek.com/xmlapi2/thing?id=${itemId}`
-      );
-      const data = userSelectedGame.data;
-      // Parsing data from XML to JS - customized code for reading attributes
+  //     try {
+  //       const wishlistDetailsData = await Promise.all(detailsPromises);
+  //       setWishlistDetails(wishlistDetailsData);
+  //     } catch (error) {
+  //       toast.error("Error fetching wishlist details:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-      const options = {
-        ignoreAttributes: false,
-        allowBooleanAttributes: true,
-      };
-      const parser = new XMLParser(options);
-      let parsedData = parser.parse(data);
-      const userSelectedGameInfo = parsedData?.items?.item;
+  //   fetchWishlistDetails();
+  // }, [wishlist]);
 
-      if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
-        const name = userSelectedGameInfo.name[0];
-        const currentName = he.decode(name["@_value"]);
-        userSelectedGameInfo.name["@_value"] = currentName;
-      }
+  // const fetchSelectedGame = async (itemId) => {
+  //   try {
+  //     const userSelectedGame = await axios.get(
+  //       `https://boardgamegeek.com/xmlapi2/thing?id=${itemId}`
+  //     );
+  //     const data = userSelectedGame.data;
+  //     // Parsing data from XML to JS - customized code for reading attributes
 
-      setSelectedGameInfo(userSelectedGameInfo);
-      console.log(selectedGameInfo);
+  //     const options = {
+  //       ignoreAttributes: false,
+  //       allowBooleanAttributes: true,
+  //     };
+  //     const parser = new XMLParser(options);
+  //     let parsedData = parser.parse(data);
+  //     const userSelectedGameInfo = parsedData?.items?.item;
 
-      return { id: itemId, gameName: userSelectedGameInfo.name["@_value"] };
-    } catch (err) {
-      console.error(`Failed to load details for game with ID ${itemId}`);
-      throw err;
-    }
-  };
+  //     if (userSelectedGameInfo && userSelectedGameInfo.name[0]) {
+  //       const name = userSelectedGameInfo.name[0];
+  //       const currentName = he.decode(name["@_value"]);
+  //       userSelectedGameInfo.name["@_value"] = currentName;
+  //     }
+
+  //     setSelectedGameInfo(userSelectedGameInfo);
+  //     console.log(selectedGameInfo);
+
+  //     return { id: itemId, gameName: userSelectedGameInfo.name["@_value"] };
+  //   } catch (err) {
+  //     console.error(`Failed to load details for game with ID ${itemId}`);
+  //     throw err;
+  //   }
+  // };
 
   return (
     <Flex
@@ -106,18 +107,15 @@ function Wishlist({
       </Heading>
       <Divider mb="2" />
       <Divider />
-      <UnorderedList listStyleType="none" w="80%">
-        {wishlistDetails.map((gameDetail) => (
+      {/* <UnorderedList listStyleType="none" w="80%">
+        {wishlist.map((gameDetail.id) => (
           <ListItem
             key={gameDetail.id}
             fontSize={{ base: "sm", sm: "md" }}
             py="2"
           >
             <Flex justify="space-between" align="center">
-              <Link
-                to={`/games/${gameDetail.id}`}
-                onClick={setIsGameInfoPage(true)}
-              >
+              <Link to={`/games/${gameDetail.id}`}>
                 <Text
                   fontSize={{ base: "xs", sm: "sm" }}
                   px="2"
@@ -140,16 +138,38 @@ function Wishlist({
                   isRound
                   variant="ghost"
                   icon={<SmallCloseIcon />}
-                  onClick={() => removeFromWishlist(gameDetail.id)}
+                  onClick={() => handleDeleteFromWishlist(gameDetail.id)}
                   size={{ base: "xs", md: "sm" }}
                 />
               </Tooltip>
             </Flex>
           </ListItem>
-        ))}
-      </UnorderedList>
+        ))} */}
+      {/* </UnorderedList> */}
     </Flex>
   );
 }
+// const GameItem = () => {
+//   co;
+//   const { data, isLoading, isSuccess, isError, error } =
+//     useGetGameByIdQuery(gameId);
+
+//   if (isLoading) {
+//     // Loading indicator
+//     return <div>Loading...</div>;
+//   }
+
+//   if (isError) {
+//     console.error("Error fetching data:", error);
+//     return <div>Error fetching data</div>;
+//   }
+
+//   if (isSuccess) {
+//     console.log("Data fetched successfully:", data);
+//     return <div>{/* Render your component using the data */}</div>;
+//   }
+
+//   return null;
+// };
 
 export default Wishlist;

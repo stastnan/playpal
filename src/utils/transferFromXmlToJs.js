@@ -12,7 +12,7 @@ export const transferXmlToJsSimple = (response) => {
   const parser = new XMLParser(parserOptions);
   const parsedResponse = parser.parse(response.items);
 
-  const data = parsedResponse?.items?.item;
+  const data = parsedResponse?.items;
   return data;
 };
 

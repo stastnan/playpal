@@ -15,6 +15,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Disable serializability checks
+      serializableCheck: false,
     }).concat(gamesApi.middleware),
 });
